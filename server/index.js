@@ -10,7 +10,13 @@ const settingsRoutes = require('./routes/settings');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://gabai-1-4b6f.onrender.com'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
