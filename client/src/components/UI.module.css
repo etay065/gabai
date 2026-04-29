@@ -1,0 +1,155 @@
+/* ── CARD ── */
+.card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(13,21,38,0.06);
+}
+.card:hover { border-color: var(--clr-border2); box-shadow: 0 3px 10px rgba(13,21,38,0.09); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.badge_tefila   { background: var(--clr-tefila-bg);   color: var(--clr-tefila-txt); }
+.badge_torah    { background: var(--clr-torah-bg);    color: var(--clr-torah-txt); }
+.badge_pending  { background: var(--clr-pending-bg);  color: var(--clr-pending-txt); }
+.badge_approved { background: var(--clr-approved-bg); color: var(--clr-approved-txt); }
+.badge_declined { background: var(--clr-declined-bg); color: var(--clr-declined-txt); }
+.badge_default  { background: var(--clr-bg3);          color: var(--clr-text2); }
+
+/* ── BUTTON ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.72rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  width: 100%;
+  letter-spacing: 0.01em;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+
+.btn_primary {
+  background: var(--navy-700);
+  color: #ffffff;
+  border-color: var(--navy-700);
+}
+.btn_primary:hover:not(:disabled) { background: var(--navy-800); border-color: var(--navy-800); }
+
+.btn_secondary {
+  background: transparent;
+  color: var(--clr-text2);
+  border-color: var(--clr-border2);
+}
+.btn_secondary:hover:not(:disabled) { background: var(--clr-bg3); }
+
+.btn_approve {
+  background: var(--green-100);
+  color: var(--green-700);
+  border-color: var(--green-200);
+  width: auto;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+}
+.btn_approve:hover:not(:disabled) { background: var(--green-200); }
+
+.btn_decline {
+  background: var(--red-100);
+  color: var(--red-700);
+  border-color: var(--red-200);
+  width: auto;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+}
+.btn_decline:hover:not(:disabled) { background: var(--red-200); }
+
+/* ── FIELD ── */
+.fieldGroup { margin-bottom: 1rem; }
+
+.fieldLabel {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--clr-text2);
+  margin-bottom: 6px;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--clr-border2);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  font-family: inherit;
+  direction: rtl;
+}
+.fieldInput::placeholder { color: var(--clr-text3); }
+.fieldInput:hover { border-color: var(--navy-300); }
+.fieldInput:focus { outline: none; border-color: var(--navy-500); box-shadow: 0 0 0 3px rgba(46,68,145,0.12); }
+textarea.fieldInput { resize: vertical; line-height: 1.6; }
+
+.fieldError { font-size: 12px; color: var(--red-500); margin-top: 5px; display: block; font-weight: 500; }
+
+/* ── DAY PILLS ── */
+.dayBar {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 1.25rem;
+  scrollbar-width: none;
+}
+.dayBar::-webkit-scrollbar { display: none; }
+
+.dayPill {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--clr-border2);
+  background: var(--clr-bg);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--clr-text2);
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.dayPill:hover { border-color: var(--navy-400); color: var(--navy-700); }
+.dayPillActive { background: var(--navy-700); color: #ffffff; border-color: var(--navy-700); box-shadow: 0 2px 8px rgba(30,47,89,0.28); }
+
+.pendingDot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--gold-400);
+  color: var(--navy-900);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.loader { text-align: center; padding: 3rem 1rem; color: var(--clr-text2); font-size: 14px; }
+.empty  { text-align: center; padding: 3rem 1rem; color: var(--clr-text3); font-size: 14px; }
