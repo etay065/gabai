@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import GabaiLogin from './pages/GabaiLogin';
+import GabaiRegister from './pages/GabaiRegister';
 import GabaiDashboard from './pages/GabaiDashboard';
 import MemberEntry from './pages/MemberEntry';
 import MemberDashboard from './pages/MemberDashboard';
@@ -17,9 +18,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/gabai/login" element={<GabaiLogin />} />
-      <Route path="/gabai/*" element={
-        <ProtectedGabai><GabaiDashboard /></ProtectedGabai>
-      } />
+      <Route path="/gabai/register" element={<GabaiRegister />} />
+      <Route path="/gabai/*" element={<ProtectedGabai><GabaiDashboard /></ProtectedGabai>} />
       <Route path="/member" element={<MemberEntry />} />
       <Route path="/member/dashboard" element={<MemberDashboard />} />
       <Route path="*" element={<Navigate to="/" replace />} />

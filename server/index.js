@@ -3,60 +3,57 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const authRoutes = require('./routes/auth');
-const requestRoutes = require('./routes/requests');
-const scheduleRoutes = require('./routes/schedule');
-const settingsRoutes = require('./routes/settings');
+const authRoutes      = require('./routes/auth');
+const requestRoutes   = require('./routes/requests');
+const scheduleRoutes  = require('./routes/schedule');
+const synagogueRoutes = require('./routes/synagogues');
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://gabai-1-4b6f.onrender.com',
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://gabai-1-4b6f.onrender.com'
-  ],
-  credentials: true
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
 }));
+
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/requests', requestRoutes);
-app.use('/api/schedule', scheduleRoutes);
-app.use('/api/settings', settingsRoutes);
+app.use('/api/auth',       authRoutes);
+app.use('/api/requests',   requestRoutes);
+app.use('/api/schedule',   scheduleRoutes);
+app.use('/api/synagogues', synagogueRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(async () => {
     console.log('✅ MongoDB connected');
-    await seedDefaultData();
+    await seedDemo();
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
 
-async function seedDefaultData() {
-  const Settings = require('./models/Settings');
-  const User = require('./models/User');
-  const bcrypt = require('bcryptjs');
+async function seedDemo() {
+  const Synagogue = require('./models/Synagogue');
+  const User      = require('./models/User');
+  const bcrypt    = require('bcryptjs');
 
-  const existingSettings = await Settings.findOne();
-  if (!existingSettings) {
-    await Settings.create({
-      shulName: 'בית הכנסת הגדול',
-      city: 'תל אביב',
-      parasha: 'בהעלותך',
-    });
-    console.log('✅ Default settings seeded');
-  }
-
-  const existingGabai = await User.findOne({ role: 'gabai' });
-  if (!existingGabai) {
+  const existing = await Synagogue.findOne({ name: 'בית הכנסת הגדול' });
+  if (!existing) {
+    const syn = await Synagogue.create({ name: 'בית הכנסת הגדול', city: 'תל אביב', parasha: 'בהעלותך' });
     const hash = await bcrypt.hash('1234', 10);
-    await User.create({ username: 'gabai', password: hash, role: 'gabai' });
-    console.log('✅ Default gabai user seeded (username: gabai, password: 1234)');
+    const gabai = await User.create({ username: 'gabai', password: hash, role: 'gabai', synagogueId: syn._id });
+    syn.gabaiId = gabai._id;
+    await syn.save();
+    console.log('✅ Demo synagogue + gabai seeded');
   }
 }
