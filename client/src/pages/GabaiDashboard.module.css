@@ -191,3 +191,30 @@
   letter-spacing: 0.08em;
   margin-bottom: 0.75rem;
 }
+
+/* ── CALENDAR WRAP ── */
+.calWrap { margin-bottom: 1.25rem; }
+
+/* ── LIST HEADER ── */
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.listTitle { font-size: 13px; font-weight: 700; color: var(--clr-text2); text-transform: uppercase; letter-spacing: 0.05em; }
+.clearDate { font-size: 12px; color: var(--navy-600); font-weight: 600; background: transparent; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); }
+.clearDate:hover { background: var(--navy-50); }
+
+/* ── DAY BAR (schedule) ── */
+.dayBarWrap { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 1.25rem; scrollbar-width: none; }
+.dayBarWrap::-webkit-scrollbar { display: none; }
+.dayPill { flex-shrink:0;padding:5px 13px;border-radius:20px;border:1.5px solid var(--clr-border2);background:var(--clr-bg);font-size:12px;font-weight:500;color:var(--clr-text2);cursor:pointer;white-space:nowrap; }
+.dayPill:hover { border-color:var(--navy-400);color:var(--navy-700); }
+.dayPillActive { background:var(--navy-700);color:#fff;border-color:var(--navy-700); }
+
+/* ── SETTINGS FIELDS ── */
+.fieldGroup { margin-bottom: 0.85rem; }
+.fieldLabel { display:block;font-size:12px;font-weight:600;color:var(--clr-text2);margin-bottom:5px; }
+.fieldInput { width:100%;padding:9px 11px;border:1.5px solid var(--clr-border2);border-radius:var(--radius-md);font-size:14px;background:var(--clr-bg);color:var(--clr-text);font-family:inherit;direction:rtl; }
+.fieldInput:focus { outline:none;border-color:var(--navy-500); }

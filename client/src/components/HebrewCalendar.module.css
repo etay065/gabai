@@ -2,7 +2,7 @@
   background: var(--clr-bg);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  user-select: none;
+  border: 1px solid var(--clr-border);
 }
 
 /* ── HEADER ── */
@@ -10,27 +10,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px 10px;
+  padding: 11px 14px 10px;
   background: var(--navy-800);
   direction: rtl;
 }
-
 .calTitle { text-align: center; }
-.calMonthHe { font-size: 15px; font-weight: 700; color: #fff; }
-.calYearHe  { font-size: 11px; color: var(--navy-300); margin-top: 1px; }
-
+.calMonthHe { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; }
+.calYearHe  { font-size: 11px; color: var(--navy-300); margin-top: 2px; }
 .navBtn {
-  width: 32px; height: 32px;
-  border-radius: 50%;
+  width: 30px; height: 30px; border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.2);
-  background: transparent;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
+  background: transparent; color: #fff;
+  font-size: 17px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  line-height: 1;
 }
-.navBtn:hover:not(:disabled) { background: rgba(255,255,255,0.12); }
+.navBtn:hover:not(:disabled) { background: rgba(255,255,255,0.15); }
 .navBtn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── GRID ── */
@@ -42,134 +36,144 @@
 }
 
 .dayHeader {
-  padding: 6px 4px;
+  padding: 5px 2px;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--clr-text2);
   background: var(--clr-bg2);
   border-left: 1px solid var(--clr-border);
   border-bottom: 1px solid var(--clr-border);
+  letter-spacing: 0.02em;
 }
 .shabbatHeader { color: var(--navy-600); background: var(--navy-50); }
 
 /* ── DAY CELL ── */
 .dayCell {
-  min-height: 58px;
-  padding: 4px 5px 3px;
+  min-height: 62px;
+  padding: 4px 4px 3px;
   border-left: 1px solid var(--clr-border);
   border-bottom: 1px solid var(--clr-border);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: stretch;
   gap: 1px;
-  transition: background 0.1s;
   direction: rtl;
+  position: relative;
 }
-.dayCell:hover:not(.disabled):not(.otherMonth) {
-  background: var(--navy-50);
+.dayCell:hover:not(.disabled):not(.otherMonth) { background: var(--navy-50); }
+
+.dayTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1px;
 }
 
 .gregNum {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--clr-text);
-  line-height: 1.2;
+  line-height: 1.3;
+}
+.todayCircle {
+  background: var(--navy-700);
+  color: #fff;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
 }
 .hebNum {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--clr-text3);
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.4;
+  direction: rtl;
 }
 
 /* ── VARIANTS ── */
-.otherMonth { background: var(--clr-bg2); cursor: default; }
+.otherMonth { background: var(--clr-bg2) !important; cursor: default; }
 .otherMonth .gregNum { color: var(--clr-border2); }
 
-.disabled { cursor: not-allowed; }
+.disabled { cursor: not-allowed !important; }
 .disabled .gregNum { color: var(--clr-border2); }
 .disabled:hover { background: transparent !important; }
 
-.today .gregNum {
-  background: var(--navy-700);
-  color: #fff;
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px;
-}
-
 .selected {
   background: var(--navy-50) !important;
-  outline: 2px solid var(--navy-600);
+  outline: 2.5px solid var(--navy-600);
   outline-offset: -2px;
 }
-.selected .gregNum { color: var(--navy-700); }
 
-.shabbat { background: #F8F6FF; }
-.shabbat .gregNum { color: var(--navy-600); font-weight: 700; }
-.shabbat:hover:not(.disabled) { background: var(--navy-100) !important; }
+.shabbat { background: #F5F3FF; }
+.shabbat .gregNum { color: var(--navy-700); font-weight: 700; }
+.shabbat:hover:not(.disabled) { background: #EAE6FF !important; }
 
 .holiday { background: #FFF8E6; }
-.holiday .gregNum { color: var(--gold-600); }
+.holiday .gregNum { color: #8B6914; }
+.holiday:hover:not(.disabled) { background: #FFF0C0 !important; }
+
+.today { }
 
 /* ── LABELS ── */
 .parasha {
-  font-size: 9px;
+  font-size: 8.5px;
   color: var(--navy-600);
-  font-weight: 600;
+  font-weight: 700;
   text-align: right;
-  width: 100%;
-  line-height: 1.2;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
 }
 
 .holidayLabel {
-  font-size: 9px;
-  color: var(--gold-600, #8B6914);
-  font-weight: 600;
+  font-size: 8.5px;
+  color: #8B6914;
+  font-weight: 700;
   text-align: right;
-  width: 100%;
-  line-height: 1.2;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
 }
+
+/* ── REQUEST DOTS ── */
+.reqDot {
+  position: absolute;
+  bottom: 3px;
+  left: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+.reqDotPending  { background: var(--gold-400); color: var(--navy-900); }
+.reqDotApproved { background: var(--green-200); color: var(--green-700); }
 
 /* ── LEGEND ── */
 .legend {
   display: flex;
-  gap: 14px;
-  padding: 8px 14px;
+  gap: 12px;
+  padding: 7px 14px;
   background: var(--clr-bg2);
   border-top: 1px solid var(--clr-border);
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 .legendItem {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  color: var(--clr-text2);
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; color: var(--clr-text2);
 }
-.legendShabbat {
-  width: 12px; height: 12px;
-  border-radius: 2px;
-  background: #F8F6FF;
-  border: 1px solid var(--navy-200);
-}
-.legendHoliday {
-  width: 12px; height: 12px;
-  border-radius: 2px;
-  background: #FFF8E6;
-  border: 1px solid var(--gold-200, #FAE094);
-}
-.legendToday {
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: var(--navy-700);
-}
+.legendShabbat { width:11px;height:11px;border-radius:2px;background:#F5F3FF;border:1px solid var(--navy-200); }
+.legendHoliday { width:11px;height:11px;border-radius:2px;background:#FFF8E6;border:1px solid #FAE094; }
+.legendPending { width:11px;height:11px;border-radius:50%;background:var(--gold-400); }
