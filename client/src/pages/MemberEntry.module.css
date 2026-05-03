@@ -6,6 +6,7 @@
   padding: 1.5rem;
   background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-700) 100%);
 }
+
 .sheet {
   background: var(--clr-bg);
   border-radius: var(--radius-xl);
@@ -14,19 +15,27 @@
   max-width: 420px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 }
+
 .backRow { margin-bottom: 1.25rem; }
 .backLink { font-size: 13px; color: var(--clr-text2); cursor: pointer; font-weight: 500; }
 .backLink:hover { color: var(--navy-600); }
+
 .iconWrap {
   width: 52px; height: 52px; border-radius: 14px;
   background: var(--navy-50);
   display: flex; align-items: center; justify-content: center;
   font-size: 26px; margin-bottom: 1rem;
 }
+
 .title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
 .sub   { font-size: 13px; color: var(--clr-text2); margin-bottom: 1.5rem; }
+
+/* synagogue selector */
 .synSection { margin-bottom: 1rem; }
-.synLabel { display: block; font-size: 13px; font-weight: 600; color: var(--clr-text2); margin-bottom: 6px; }
+.synLabel {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--clr-text2); margin-bottom: 6px;
+}
 .searchInput {
   width: 100%; padding: 9px 11px; margin-bottom: 8px;
   border: 1.5px solid var(--clr-border2);
@@ -35,7 +44,9 @@
   background: var(--clr-bg); color: var(--clr-text);
 }
 .searchInput:focus { outline: none; border-color: var(--navy-500); }
+
 .synError { font-size: 12px; color: var(--red-500); display: block; margin-bottom: 6px; font-weight: 500; }
+
 .synList {
   border: 1.5px solid var(--clr-border2);
   border-radius: var(--radius-md);
@@ -43,16 +54,22 @@
   overflow-y: auto;
   background: var(--clr-bg);
 }
+
 .synItem {
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 12px; cursor: pointer;
+  padding: 10px 12px;
+  cursor: pointer;
   border-bottom: 0.5px solid var(--clr-border);
+  transition: background 0.12s;
   position: relative;
 }
 .synItem:last-child { border-bottom: none; }
 .synItem:hover { background: var(--navy-50); }
 .synItemSel { background: var(--navy-50); }
+
 .synName { font-size: 14px; font-weight: 600; flex: 1; }
 .synCity { font-size: 12px; color: var(--clr-text2); }
-.synCheck { color: var(--green-700); font-weight: 700; font-size: 14px; }
+.synCheck {
+  color: var(--green-700); font-weight: 700; font-size: 14px;
+}
 .synEmpty { padding: 1.5rem; text-align: center; font-size: 13px; color: var(--clr-text3); }

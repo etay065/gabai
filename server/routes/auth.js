@@ -11,25 +11,35 @@ router.post('/login', async (req, res) => {
     if (!username || !password)
       return res.status(400).json({ message: 'נדרשים שם משתמש וסיסמה' });
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).populate('synagogueId');
     if (!user) return res.status(401).json({ message: 'שם משתמש או סיסמה שגויים' });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: 'שם משתמש או סיסמה שגויים' });
 
     const token = jwt.sign(
-      { id: user._id, username: user.username, role: user.role },
+      { id: user._id, username: user.username, role: user.role, synagogueId: user.synagogueId?._id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30d' }
     );
 
-    res.json({ token, username: user.username, role: user.role });
+    res.json({
+      token,
+      username: user.username,
+      role: user.role,
+      synagogue: user.synagogueId ? {
+        _id: user.synagogueId._id,
+        name: user.synagogueId.name,
+        city: user.synagogueId.city,
+        parasha: user.synagogueId.parasha,
+      } : null,
+    });
   } catch (err) {
     res.status(500).json({ message: 'שגיאת שרת' });
   }
 });
 
-// POST /api/auth/change-password  (protected)
+// POST /api/auth/change-password (protected)
 router.post('/change-password', authMiddleware, async (req, res) => {
   try {
     const { newPassword } = req.body;
@@ -44,9 +54,18 @@ router.post('/change-password', authMiddleware, async (req, res) => {
   }
 });
 
-// GET /api/auth/me  (protected)
-router.get('/me', authMiddleware, (req, res) => {
-  res.json({ username: req.user.username, role: req.user.role });
+// GET /api/auth/me (protected)
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('synagogueId');
+    res.json({
+      username: user.username,
+      role: user.role,
+      synagogue: user.synagogueId,
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'שגיאת שרת' });
+  }
 });
 
 module.exports = router;

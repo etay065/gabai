@@ -4,6 +4,7 @@ const requestSchema = new mongoose.Schema({
   memberName:   { type: String, required: true, trim: true },
   synagogueId:  { type: mongoose.Schema.Types.ObjectId, ref: 'Synagogue', required: true },
   day:          { type: Number, required: true, min: 0, max: 6 },
+  requestDate:  { type: String, default: '' },
   type:         { type: String, enum: ['תפילה', 'קריאת תורה'], required: true },
   sub:          { type: String, required: true },
   reason:       { type: String, default: '' },

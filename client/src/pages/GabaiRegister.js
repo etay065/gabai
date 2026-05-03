@@ -27,11 +27,14 @@ export default function GabaiRegister() {
     <div className={styles.page}>
       <div className={styles.sheet}>
         <div className={styles.backRow}>
-          <span className={styles.backLink} onClick={() => navigate('/gabai/login')}>← חזרה לכניסה</span>
+          <span className={styles.backLink} onClick={() => navigate('/gabai/login')}>
+            ← חזרה לכניסה
+          </span>
         </div>
         <div className={styles.iconWrap}>🕍</div>
         <h2 className={styles.title}>רישום בית כנסת חדש</h2>
         <p className={styles.sub}>צור חשבון גבאי לבית הכנסת שלך</p>
+
         <form onSubmit={handle}>
           <Input label="שם בית הכנסת" value={form.synagogueName}
             onChange={e => setForm(f => ({ ...f, synagogueName: e.target.value }))}

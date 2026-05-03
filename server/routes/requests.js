@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Request = require('../models/Request');
 const authMiddleware = require('../middleware/auth');
 
+// GET /api/requests
 router.get('/', async (req, res) => {
   try {
     const filter = {};
@@ -13,26 +14,25 @@ router.get('/', async (req, res) => {
     const requests = await Request.find(filter).sort({ createdAt: -1 });
     res.json(requests);
   } catch (err) {
-    console.error('GET /requests error:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'שגיאת שרת' });
   }
 });
 
+// POST /api/requests — member submits
 router.post('/', async (req, res) => {
   try {
-    console.log('POST /requests body:', req.body);
     const { memberName, synagogueId, day, type, sub, reason, shabbatLabel } = req.body;
     if (!memberName || !synagogueId || day === undefined || !type || !sub)
-      return res.status(400).json({ message: 'חסרים שדות חובה', received: req.body });
+      return res.status(400).json({ message: 'חסרים שדות חובה' });
 
     const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel });
     res.status(201).json(request);
   } catch (err) {
-    console.error('POST /requests error:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'שגיאת שרת' });
   }
 });
 
+// PATCH /api/requests/:id/status — gabai only
 router.patch('/:id/status', authMiddleware, async (req, res) => {
   try {
     const { status } = req.body;
@@ -43,17 +43,17 @@ router.patch('/:id/status', authMiddleware, async (req, res) => {
     if (!request) return res.status(404).json({ message: 'בקשה לא נמצאה' });
     res.json(request);
   } catch (err) {
-    console.error('PATCH /requests error:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'שגיאת שרת' });
   }
 });
 
+// DELETE /api/requests/:id — gabai only
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     await Request.findByIdAndDelete(req.params.id);
     res.json({ message: 'נמחק בהצלחה' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'שגיאת שרת' });
   }
 });
 

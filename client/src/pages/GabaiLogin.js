@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { Input, Button } from '../components/UI';
 import styles from './AuthPage.module.css';
@@ -31,6 +32,7 @@ export default function GabaiLogin() {
         <div className={styles.iconWrap}>📋</div>
         <h2 className={styles.title}>Gab-AI · כניסת גבאי</h2>
         <p className={styles.sub}>הסשיין יישמר ל-30 יום</p>
+
         <form onSubmit={handle}>
           <Input label="שם משתמש" value={form.username}
             onChange={e => setForm(f => ({ ...f, username: e.target.value }))}
@@ -43,7 +45,9 @@ export default function GabaiLogin() {
             {loading ? 'מתחבר...' : 'כניסה →'}
           </Button>
         </form>
+
         <div className={styles.divider}>או</div>
+
         <Button variant="secondary" onClick={() => navigate('/gabai/register')}>
           🕍 רישום בית כנסת חדש
         </Button>

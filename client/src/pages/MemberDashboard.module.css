@@ -154,3 +154,20 @@
 }
 
 .typeOptIcon { font-size: 20px; }
+
+/* synagogue banner */
+.synBanner {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--navy-50); border: 1px solid var(--navy-200);
+  border-radius: var(--radius-lg); padding: 10px 14px;
+  margin-bottom: 1.25rem;
+}
+.synBannerIcon { font-size: 22px; flex-shrink: 0; }
+.synBannerName { font-size: 14px; font-weight: 600; flex: 1; }
+.synBannerCity { font-size: 12px; color: var(--clr-text2); }
+.changeSynBtn {
+  font-size: 12px; color: var(--navy-600); font-weight: 600;
+  background: transparent; border: none; cursor: pointer; padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+.changeSynBtn:hover { background: var(--navy-100); }

@@ -13,25 +13,23 @@ export default function GabaiDashboard() {
   const { gabai, logoutGabai } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const synagogue = gabai?.synagogue;
 
   const [tab, setTab] = useState('requests');
   const [reqDay, setReqDay] = useState(6);
   const [schedDay, setSchedDay] = useState(6);
 
-  const { data: settings } = useQuery({
-    queryKey: ['settings'],
-    queryFn: () => api.get('/settings').then(r => r.data),
-  });
-
   const { data: allRequests = [], isLoading: loadingReqs } = useQuery({
-    queryKey: ['allRequests'],
-    queryFn: () => api.get('/requests').then(r => r.data),
+    queryKey: ['allRequests', synagogue?._id],
+    queryFn: () => api.get('/requests', { params: { synagogueId: synagogue?._id } }).then(r => r.data),
+    enabled: !!synagogue?._id,
     refetchInterval: 30_000,
   });
 
   const { data: scheduleAll = [] } = useQuery({
-    queryKey: ['schedule'],
-    queryFn: () => api.get('/schedule').then(r => r.data),
+    queryKey: ['schedule', synagogue?._id],
+    queryFn: () => api.get('/schedule', { params: { synagogueId: synagogue?._id } }).then(r => r.data),
+    enabled: !!synagogue?._id,
   });
 
   const statusMutation = useMutation({
@@ -43,21 +41,17 @@ export default function GabaiDashboard() {
     onError: () => toast.error('שגיאה בעדכון'),
   });
 
-  const handleLogout = () => { logoutGabai(); navigate('/'); };
-
   const pendingCounts = allRequests.reduce((acc, r) => {
     if (r.status === 'pending') acc[r.day] = (acc[r.day] || 0) + 1;
     return acc;
   }, {});
 
-  const filteredReqs = allRequests.filter(r => r.day === reqDay);
-  const pending  = allRequests.filter(r => r.status === 'pending').length;
-  const approved = allRequests.filter(r => r.status === 'approved').length;
-
+  const filteredReqs  = allRequests.filter(r => r.day === reqDay);
+  const pending       = allRequests.filter(r => r.status === 'pending').length;
+  const approved      = allRequests.filter(r => r.status === 'approved').length;
   const daySchedule   = scheduleAll.find(s => s.day === schedDay)?.prayers || [];
   const approvedForDay = allRequests.filter(r => r.day === schedDay && r.status === 'approved');
-
-  const statusLabel = s => ({ pending: 'ממתין', approved: 'אושר ✓', declined: 'נדחה' })[s] || s;
+  const statusLabel   = s => ({ pending:'ממתין', approved:'אושר ✓', declined:'נדחה' })[s] || s;
 
   return (
     <div className={styles.page}>
@@ -66,84 +60,60 @@ export default function GabaiDashboard() {
         <div className={styles.headerInfo}>
           <div className={styles.headerTitle}>Gab-AI · לוח הגבאי</div>
           <div className={styles.headerSub}>
-            {settings?.shulName}{settings?.parasha ? ` · פרשת ${settings.parasha}` : ''}
+            {synagogue?.name || ''}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}
           </div>
         </div>
-        <button className={styles.logoutBtn} onClick={handleLogout} aria-label="יציאה מהמערכת">
-          יציאה
-        </button>
+        <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>יציאה</button>
       </header>
 
-      <nav className={styles.tabs} role="tablist">
-        {[
-          ['requests', 'בקשות', pending],
-          ['schedule', 'לוח זמנים', 0],
-          ['settings', 'הגדרות', 0],
-        ].map(([key, label, count]) => (
-          <button
-            key={key}
-            role="tab"
-            aria-selected={tab === key}
-            className={`${styles.tab} ${tab === key ? styles.tabActive : ''}`}
-            onClick={() => setTab(key)}
-          >
+      <nav className={styles.tabs}>
+        {[['requests','בקשות',pending],['schedule','לוח זמנים',0],['settings','הגדרות',0]].map(([key,label,cnt]) => (
+          <button key={key}
+            className={`${styles.tab} ${tab===key?styles.tabActive:''}`}
+            onClick={() => setTab(key)}>
             {label}
-            {count > 0 && <span className={styles.tabBadge}>{count}</span>}
+            {cnt > 0 && <span className={styles.tabBadge}>{cnt}</span>}
           </button>
         ))}
       </nav>
 
-      <main className={styles.body} role="tabpanel">
-
-        {/* ── REQUESTS ── */}
+      <main className={styles.body}>
         {tab === 'requests' && (
           <>
             <div className={styles.metrics}>
               <div className={`${styles.metric} ${styles.metricPending}`}>
-                <div className={styles.metricNum}>{pending}</div>
-                <div className={styles.metricLbl}>ממתינות</div>
+                <div className={styles.metricNum}>{pending}</div><div className={styles.metricLbl}>ממתינות</div>
               </div>
               <div className={`${styles.metric} ${styles.metricApproved}`}>
-                <div className={styles.metricNum}>{approved}</div>
-                <div className={styles.metricLbl}>אושרו</div>
+                <div className={styles.metricNum}>{approved}</div><div className={styles.metricLbl}>אושרו</div>
               </div>
               <div className={styles.metric}>
-                <div className={styles.metricNum}>{allRequests.length}</div>
-                <div className={styles.metricLbl}>סה"כ</div>
+                <div className={styles.metricNum}>{allRequests.length}</div><div className={styles.metricLbl}>סה"כ</div>
               </div>
             </div>
-
             <DayPills days={DAYS} activeDay={reqDay} onSelect={setReqDay} pendingCounts={pendingCounts} />
-
             {loadingReqs && <Loader />}
             {!loadingReqs && filteredReqs.length === 0 && <EmptyState text="אין בקשות ליום זה" />}
-
             {filteredReqs.map(r => (
               <Card key={r._id}>
                 <div className={styles.reqRow}>
                   <div>
                     <div className={styles.reqNameRow}>
-                      {r.status === 'pending' && <span className={styles.dot} aria-hidden="true" />}
+                      {r.status === 'pending' && <span className={styles.dot} />}
                       <span className={styles.reqName}>{r.memberName}</span>
                     </div>
                     <div className={styles.reqTime}>
-                      {new Date(r.createdAt).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' })}
+                      {new Date(r.createdAt).toLocaleString('he-IL', { dateStyle:'short', timeStyle:'short' })}
                     </div>
                   </div>
                 </div>
-                <Badge variant={r.type === 'תפילה' ? 'tefila' : 'torah'}>
-                  {r.type} — {r.sub}
-                </Badge>
+                <Badge variant={r.type === 'תפילה' ? 'tefila' : 'torah'}>{r.type} — {r.sub}</Badge>
                 {r.reason && <p className={styles.reason}>{r.reason}</p>}
                 <div className={styles.actions}>
                   {r.status === 'pending' ? (
                     <>
-                      <Button variant="approve" onClick={() => statusMutation.mutate({ id: r._id, status: 'approved' })}>
-                        ✓ אישור
-                      </Button>
-                      <Button variant="decline" onClick={() => statusMutation.mutate({ id: r._id, status: 'declined' })}>
-                        ✕ דחייה
-                      </Button>
+                      <Button variant="approve" onClick={() => statusMutation.mutate({ id: r._id, status: 'approved' })}>✓ אישור</Button>
+                      <Button variant="decline" onClick={() => statusMutation.mutate({ id: r._id, status: 'declined' })}>✕ דחייה</Button>
                     </>
                   ) : (
                     <Badge variant={r.status}>{statusLabel(r.status)}</Badge>
@@ -154,7 +124,6 @@ export default function GabaiDashboard() {
           </>
         )}
 
-        {/* ── SCHEDULE ── */}
         {tab === 'schedule' && (
           <>
             <DayPills days={DAYS} activeDay={schedDay} onSelect={setSchedDay} />
@@ -168,9 +137,7 @@ export default function GabaiDashboard() {
                   {p.details && <div className={styles.schedDetails}>{p.details}</div>}
                   {reqs.length > 0 && (
                     <div className={styles.schedTags}>
-                      {reqs.map(r => (
-                        <span key={r._id} className={styles.schedTag}>{r.memberName}</span>
-                      ))}
+                      {reqs.map(r => <span key={r._id} className={styles.schedTag}>{r.memberName}</span>)}
                     </div>
                   )}
                 </div>
@@ -179,28 +146,20 @@ export default function GabaiDashboard() {
           </>
         )}
 
-        {/* ── SETTINGS ── */}
-        {tab === 'settings' && <GabaiSettings settings={settings} qc={qc} />}
+        {tab === 'settings' && <GabaiSettings synagogue={synagogue} gabai={gabai} qc={qc} />}
       </main>
     </div>
   );
 }
 
-function GabaiSettings({ settings, qc }) {
-  const [form, setForm] = useState({
-    shulName: settings?.shulName || '',
-    city:     settings?.city     || '',
-    parasha:  settings?.parasha  || '',
-  });
+function GabaiSettings({ synagogue, gabai, qc }) {
+  const { loginGabai } = useAuth();
+  const [form, setForm] = useState({ name: synagogue?.name || '', city: synagogue?.city || '', parasha: synagogue?.parasha || '' });
   const [passForm, setPassForm] = useState({ newPassword: '', confirm: '' });
-
-  React.useEffect(() => {
-    if (settings) setForm({ shulName: settings.shulName, city: settings.city, parasha: settings.parasha });
-  }, [settings]);
 
   const saveSettings = async e => {
     e.preventDefault();
-    await api.put('/settings', form);
+    await api.put(`/synagogues/${synagogue._id}`, form);
     qc.invalidateQueries(['settings']);
     toast.success('ההגדרות נשמרו ✓');
   };
@@ -219,17 +178,13 @@ function GabaiSettings({ settings, qc }) {
       <div className={styles.settingsSection}>הגדרות בית הכנסת</div>
       <Card>
         <form onSubmit={saveSettings}>
-          <Input label="שם בית הכנסת" value={form.shulName}
-            onChange={e => setForm(f => ({ ...f, shulName: e.target.value }))} />
-          <Input label="עיר / שכונה" value={form.city}
-            onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
-          <Input label="פרשת השבוע" value={form.parasha}
-            onChange={e => setForm(f => ({ ...f, parasha: e.target.value }))} />
-          <Button type="submit">שמור הגדרות</Button>
+          <Input label="שם בית הכנסת" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+          <Input label="עיר / שכונה" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
+          <Input label="פרשת השבוע" value={form.parasha} onChange={e => setForm(f => ({ ...f, parasha: e.target.value }))} />
+          <Button type="submit">שמור</Button>
         </form>
       </Card>
-
-      <div className={styles.settingsSection} style={{ marginTop: '1.5rem' }}>שינוי סיסמת גבאי</div>
+      <div className={styles.settingsSection} style={{ marginTop:'1.25rem' }}>שינוי סיסמה</div>
       <Card>
         <form onSubmit={changePass}>
           <Input label="סיסמה חדשה" type="password" value={passForm.newPassword}

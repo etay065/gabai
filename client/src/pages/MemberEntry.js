@@ -41,9 +41,11 @@ export default function MemberEntry() {
         <div className={styles.backRow}>
           <span className={styles.backLink} onClick={() => navigate('/')}>← חזרה לדף הבית</span>
         </div>
+
         <div className={styles.iconWrap}>🙏</div>
         <h2 className={styles.title}>כניסת מתפלל</h2>
         <p className={styles.sub}>ללא צורך בסיסמה — רק שם ובית כנסת</p>
+
         <form onSubmit={handle}>
           <Input
             label="שם מלא"
@@ -53,6 +55,7 @@ export default function MemberEntry() {
             error={nameError}
             autoFocus
           />
+
           <div className={styles.synSection}>
             <label className={styles.synLabel}>בחר בית כנסת</label>
             <input
@@ -80,8 +83,10 @@ export default function MemberEntry() {
               ))}
             </div>
           </div>
+
           <Button type="submit">המשך →</Button>
         </form>
+
         <Button variant="secondary" onClick={() => navigate('/')} style={{ marginTop: 10 }}>
           ביטול
         </Button>
