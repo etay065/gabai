@@ -218,3 +218,14 @@
 .fieldLabel { display:block;font-size:12px;font-weight:600;color:var(--clr-text2);margin-bottom:5px; }
 .fieldInput { width:100%;padding:9px 11px;border:1.5px solid var(--clr-border2);border-radius:var(--radius-md);font-size:14px;background:var(--clr-bg);color:var(--clr-text);font-family:inherit;direction:rtl; }
 .fieldInput:focus { outline:none;border-color:var(--navy-500); }
+
+.auctionBtn {
+  padding: 6px 10px;
+  border: 1px solid rgba(232,181,42,0.5);
+  border-radius: var(--radius-md);
+  font-size: 12px; font-weight: 500;
+  color: var(--gold-400);
+  background: transparent; cursor: pointer;
+  margin-left: 6px;
+}
+.auctionBtn:hover { background: rgba(232,181,42,0.1); }
