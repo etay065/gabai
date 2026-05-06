@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
     if (!memberName || !synagogueId || day === undefined || !type || !sub)
       return res.status(400).json({ message: 'חסרים שדות חובה' });
 
-    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel });
+    const { requestDate } = req.body;
+    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate });
     res.status(201).json(request);
   } catch (err) {
     res.status(500).json({ message: 'שגיאת שרת' });
