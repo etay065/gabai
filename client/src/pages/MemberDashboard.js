@@ -164,6 +164,7 @@ export default function MemberDashboard() {
   if (!name || !synagogue) { navigate("/member"); return null; }
   const handleSubmit = e => {
     e.preventDefault();
+    console.log("DEBUG selectedDate:", selectedDate, "key:", selectedDate ? toKey(selectedDate) : "NULL");
     if (!selectedDate) { toast.error("יש לבחור תאריך"); return; }
     const key = toKey(selectedDate);
     submitMutation.mutate({
@@ -261,3 +262,5 @@ export default function MemberDashboard() {
     </div>
   );
 }
+// UNIQUE_MARKER_12345
+// test
