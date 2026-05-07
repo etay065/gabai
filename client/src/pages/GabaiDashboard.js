@@ -156,6 +156,9 @@ export default function GabaiDashboard() {
   const [tab, setTab] = useState('requests');
   const [selectedDate, setSelectedDate] = useState(null);
   const [schedDate, setSchedDate] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editReq, setEditReq] = useState(null);
+  const [manualForm, setManualForm] = useState({ memberName: '', requestDate: '', type: 'תפילה', sub: 'שחרית', reason: '', status: 'approved' });
 
   const { data: allRequests = [], isLoading: loadingReqs } = useQuery({
     queryKey: ['allRequests', synagogue?._id],
@@ -177,6 +180,24 @@ export default function GabaiDashboard() {
       toast.success(status === 'approved' ? 'הבקשה אושרה ✓' : 'הבקשה נדחתה');
     },
     onError: () => toast.error('שגיאה בעדכון'),
+  });
+
+  const createMutation = useMutation({
+    mutationFn: data => api.post('/requests', data),
+    onSuccess: () => { qc.invalidateQueries(['allRequests']); setShowAddForm(false); toast.success('בקשה נוספה'); setManualForm({ memberName: '', requestDate: '', type: 'תפילה', sub: 'שחרית', reason: '', status: 'approved' }); },
+    onError: err => toast.error(err.response?.data?.message || 'שגיאה'),
+  });
+
+  const editMutation = useMutation({
+    mutationFn: ({ id, data }) => api.put('/requests/' + id, data),
+    onSuccess: () => { qc.invalidateQueries(['allRequests']); setEditReq(null); toast.success('בקשה עודכנה'); },
+    onError: () => toast.error('שגיאה בעדכון'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: id => api.delete('/requests/' + id),
+    onSuccess: () => { qc.invalidateQueries(['allRequests']); toast.success('בקשה נמחקה'); },
+    onError: () => toast.error('שגיאה במחיקה'),
   });
 
   const pendingAll = allRequests.filter(r => r.status === 'pending');
@@ -270,6 +291,10 @@ export default function GabaiDashboard() {
               )}
             </div>
 
+            <button className={styles.addManualBtn} onClick={() => { setManualForm({ memberName: '', requestDate: selectedDate ? toKey(selectedDate) : '', type: 'תפילה', sub: 'שחרית', reason: '', status: 'approved' }); setShowAddForm(true); }}>
+              + הוסף בקשה ידנית
+            </button>
+
             {loadingReqs && <Loader />}
             {!loadingReqs && filteredReqs.length === 0 && (
               <EmptyState text={selectedDate ? 'אין בקשות לתאריך זה' : 'אין בקשות ממתינות'} />
@@ -287,6 +312,10 @@ export default function GabaiDashboard() {
                       📅 {formatReqDate(r)}
                       {r.shabbatLabel ? ` · ${r.shabbatLabel}` : ''}
                     </div>
+                  </div>
+                  <div className={styles.reqActions}>
+                    <button className={styles.editBtn} onClick={() => { setEditReq(r); setManualForm({ memberName: r.memberName, requestDate: r.requestDate, type: r.type, sub: r.sub, reason: r.reason||'', status: r.status }); }}>✏️</button>
+                    <button className={styles.deleteBtn2} onClick={() => { if(window.confirm('למחוק בקשה זו?')) deleteMutation.mutate(r._id); }}>🗑️</button>
                   </div>
                 </div>
                 <Badge variant={r.type==='תפילה'?'tefila':'torah'}>{r.type} — {r.sub}</Badge>
@@ -372,6 +401,69 @@ export default function GabaiDashboard() {
         {/* ── SETTINGS ── */}
         {tab === 'settings' && <GabaiSettings synagogue={synagogue} qc={qc} />}
       </main>
+
+      {(showAddForm || editReq) && (
+        <div className={styles.modalBg} onClick={() => { setShowAddForm(false); setEditReq(null); }}>
+          <div className={styles.modalSheet} onClick={e => e.stopPropagation()}>
+            <div className={styles.modalHandle} />
+            <h3 className={styles.modalTitle}>{editReq ? 'עריכת בקשה' : 'הוספה ידנית'}</h3>
+            <div className={styles.fieldGroup}>
+              <label className={styles.fieldLabel}>שם המתפלל</label>
+              <input className={styles.fieldInput} value={manualForm.memberName} onChange={e => setManualForm(f => ({ ...f, memberName: e.target.value }))} placeholder="שם מלא" />
+            </div>
+            <div className={styles.fieldGroup}>
+              <label className={styles.fieldLabel}>תאריך</label>
+              <input className={styles.fieldInput} type="date" value={manualForm.requestDate} onChange={e => setManualForm(f => ({ ...f, requestDate: e.target.value }))} />
+            </div>
+            <div className={styles.fieldGroup}>
+              <label className={styles.fieldLabel}>סוג בקשה</label>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginTop:6}}>
+                {[['תפילה','🕯️'],['קריאת תורה','📖'],['דרשן','🎤']].map(([t,icon]) => (
+                  <button key={t} type="button"
+                    style={{padding:'8px 4px',border: manualForm.type===t ? '2px solid var(--navy-600)' : '1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',background: manualForm.type===t ? 'var(--navy-50)' : 'var(--clr-bg)',fontSize:12,fontWeight:600,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:4}}
+                    onClick={() => setManualForm(f => ({ ...f, type: t, sub: t==='תפילה'?'שחרית':t==='קריאת תורה'?'כהן ראשון':'דרשה' }))}>
+                    <span>{icon}</span>{t}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className={styles.fieldGroup}>
+              <label className={styles.fieldLabel}>{manualForm.type === 'תפילה' ? 'תפילה' : manualForm.type === 'קריאת תורה' ? 'עלייה' : 'סוג'}</label>
+              <select className={styles.fieldInput} value={manualForm.sub} onChange={e => setManualForm(f => ({ ...f, sub: e.target.value }))}>
+                {manualForm.type === 'תפילה' && ['שחרית','מוסף','מנחה','קבלת שבת','מעריב'].map(p => <option key={p}>{p}</option>)}
+                {manualForm.type === 'קריאת תורה' && ['כהן ראשון','לוי שני','שלישי','רביעי','חמישי','שישי','שביעי','מפטיר'].map(a => <option key={a}>{a}</option>)}
+                {manualForm.type === 'דרשן' && ['דרשה','שיעור תורה','הספד','דברי תורה קצרים'].map(d => <option key={d}>{d}</option>)}
+              </select>
+            </div>
+            <div className={styles.fieldGroup}>
+              <label className={styles.fieldLabel}>סטטוס</label>
+              <select className={styles.fieldInput} value={manualForm.status} onChange={e => setManualForm(f => ({ ...f, status: e.target.value }))}>
+                <option value="approved">אושר</option>
+                <option value="pending">ממתין</option>
+                <option value="declined">נדחה</option>
+              </select>
+            </div>
+            <div className={styles.fieldGroup} style={{marginBottom:'1rem'}}>
+              <label className={styles.fieldLabel}>סיבה (אופציונלי)</label>
+              <input className={styles.fieldInput} value={manualForm.reason} onChange={e => setManualForm(f => ({ ...f, reason: e.target.value }))} placeholder="יאהרצייט, בר מצווה..." />
+            </div>
+            <button style={{width:'100%',padding:'0.75rem',background:'var(--navy-700)',color:'#fff',border:'none',borderRadius:'var(--radius-md)',fontSize:14,fontWeight:600,cursor:'pointer',marginBottom:8}}
+              onClick={() => {
+                const d = manualForm.requestDate ? new Date(manualForm.requestDate + 'T12:00:00') : new Date();
+                const data = { ...manualForm, synagogueId: synagogue._id, day: manualForm.requestDate ? d.getDay() : 6, shabbatLabel: manualForm.requestDate ? (PARASHA[manualForm.requestDate] || HOLIDAYS[manualForm.requestDate] || '') : '' };
+                if (editReq) editMutation.mutate({ id: editReq._id, data });
+                else createMutation.mutate(data);
+              }}
+              disabled={!manualForm.memberName}>
+              {editReq ? 'עדכן בקשה' : 'הוסף בקשה'}
+            </button>
+            <button style={{width:'100%',padding:'0.65rem',background:'transparent',border:'1px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:13,color:'var(--clr-text2)',cursor:'pointer'}}
+              onClick={() => { setShowAddForm(false); setEditReq(null); }}>
+              ביטול
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

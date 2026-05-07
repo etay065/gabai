@@ -18,15 +18,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/requests — member submits
+// POST /api/requests
 router.post('/', async (req, res) => {
   try {
-    const { memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate } = req.body;
+    const { memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate, status } = req.body;
     if (!memberName || !synagogueId || day === undefined || !type || !sub)
       return res.status(400).json({ message: 'חסרים שדות חובה' });
-
-    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate });
+    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate: requestDate || '', status: status || 'pending' });
     res.status(201).json(request);
+  } catch (err) {
+    res.status(500).json({ message: 'שגיאת שרת' });
+  }
+});
+
+// PUT /api/requests/:id — gabai edits
+router.put('/:id', authMiddleware, async (req, res) => {
+  try {
+    const { memberName, day, type, sub, reason, shabbatLabel, requestDate, status } = req.body;
+    const request = await Request.findByIdAndUpdate(req.params.id, { memberName, day, type, sub, reason, shabbatLabel, requestDate, status }, { new: true });
+    if (!request) return res.status(404).json({ message: 'בקשה לא נמצאה' });
+    res.json(request);
   } catch (err) {
     res.status(500).json({ message: 'שגיאת שרת' });
   }

@@ -229,3 +229,45 @@
   margin-left: 6px;
 }
 .auctionBtn:hover { background: rgba(232,181,42,0.1); }
+
+.addManualBtn {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 1rem;
+  border: 1.5px dashed var(--clr-border2);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--navy-600);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  direction: rtl;
+}
+.addManualBtn:hover { background: var(--navy-50); border-color: var(--navy-400); }
+
+.reqActions { display: flex; gap: 6px; align-items: center; }
+.editBtn {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-bg);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.editBtn:hover { background: var(--navy-50); }
+.deleteBtn2 {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-bg);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.deleteBtn2:hover { background: #FAE0E0; }
+
+.modalBg { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 50; }
+.modalSheet { background: var(--clr-bg); border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding: 1.5rem 1.5rem 2.5rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; direction: rtl; }
+.modalHandle { width: 36px; height: 4px; background: var(--clr-border2); border-radius: 2px; margin: 0 auto 1.25rem; }
+.modalTitle { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
