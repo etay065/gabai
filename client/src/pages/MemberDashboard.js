@@ -142,7 +142,7 @@ export default function MemberDashboard() {
           </div>
           <button className={styles.changeSynBtn} onClick={() => navigate('/member')}>החלף</button>
         </div>
-        <button className={styles.newBtn} onClick={() => setShowCal(true)}>+ בקשה חדשה לשבת</button>
+        <button className={styles.newBtn} onClick={() => setShowCal(true)}>+ בקשה חדשה</button>
         <div className={styles.sectionLabel}>הבקשות שלי</div>
         {isLoading && <Loader />}
         {!isLoading && myRequests?.length === 0 && (<EmptyState text="טרם הגשת בקשות" />)}
