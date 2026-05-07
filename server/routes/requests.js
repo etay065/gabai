@@ -21,11 +21,11 @@ router.get('/', async (req, res) => {
 // POST /api/requests — member submits
 router.post('/', async (req, res) => {
   try {
-    const { memberName, synagogueId, day, type, sub, reason, shabbatLabel } = req.body;
+    const { memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate } = req.body;
     if (!memberName || !synagogueId || day === undefined || !type || !sub)
       return res.status(400).json({ message: 'חסרים שדות חובה' });
 
-    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel });
+    const request = await Request.create({ memberName, synagogueId, day, type, sub, reason, shabbatLabel, requestDate });
     res.status(201).json(request);
   } catch (err) {
     res.status(500).json({ message: 'שגיאת שרת' });
