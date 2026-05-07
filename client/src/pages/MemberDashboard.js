@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { HDate, HebrewCalendar, months } from '@hebcal/core';
+import { HDate, HebrewCalendar, months, Sedra, ParshaEvent, greg } from '@hebcal/core';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -9,7 +9,38 @@ import { Card, Badge, Button, Select, Textarea, Loader, EmptyState } from '../co
 import styles from './MemberDashboard.module.css';
 
 const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-const PARASHA = {'2025-05-03':'אחרי מות-קדושים','2025-05-10':'אמור','2025-05-17':'בהר-בחוקותי','2025-05-24':'במדבר','2025-06-07':'נשא','2025-06-14':'בהעלותך','2025-06-21':'שלח','2025-06-28':'קרח','2025-07-05':'חוקת','2025-07-12':'בלק','2025-07-19':'פינחס','2025-07-26':'מטות-מסעי','2025-08-02':'דברים','2025-08-09':'ואתחנן','2025-08-16':'עקב','2025-08-23':'ראה','2025-08-30':'שופטים','2025-09-06':'כי תצא','2025-09-13':'כי תבוא','2025-09-20':'נצבים-וילך','2025-10-18':'בראשית','2025-10-25':'נח','2025-11-01':'לך לך','2025-11-08':'וירא','2025-11-15':'חיי שרה','2025-11-22':'תולדות','2025-11-29':'ויצא','2025-12-06':'וישלח','2025-12-13':'וישב','2025-12-20':'מקץ','2025-12-27':'ויגש','2026-01-03':'ויחי','2026-01-10':'שמות','2026-01-17':'וארא','2026-01-24':'בא','2026-01-31':'בשלח','2026-02-07':'יתרו','2026-02-14':'משפטים','2026-02-21':'תרומה','2026-02-28':'תצוה','2026-03-07':'כי תשא','2026-03-14':'ויקהל','2026-03-21':'פקודי','2026-03-28':'ויקרא','2026-04-04':'צו','2026-04-25':'שמיני','2026-05-02':'תזריע-מצורע','2026-05-09':'אחרי מות-קדושים','2026-05-16':'אמור','2026-05-23':'בהר-בחוקותי','2026-05-30':'במדבר','2026-06-13':'נשא','2026-06-20':'בהעלותך','2026-06-27':'שלח','2026-07-04':'קרח','2026-07-11':'חוקת-בלק','2026-07-18':'פינחס','2026-07-25':'מטות-מסעי','2026-08-01':'דברים'};
+function getParasha(date) {
+  try {
+    const hd = new HDate(date);
+    const sedra = new Sedra(hd.getFullYear(), false);
+    const abs = HDate.hebrew2abs(hd.getFullYear(), hd.getMonth(), hd.getDate());
+    const parsha = sedra.lookup(abs);
+    if (parsha && parsha.chag === false) {
+      const names = parsha.parsha;
+      const hebrewNames = {
+        'Bereshit':'בראשית','Noach':'נח','Lech-Lecha':'לך לך','Vayera':'וירא',
+        'Chayei Sara':'חיי שרה','Toldot':'תולדות','Vayetzei':'ויצא','Vayishlach':'וישלח',
+        'Vayeshev':'וישב','Miketz':'מקץ','Vayigash':'ויגש','Vayechi':'ויחי',
+        'Shemot':'שמות','Vaera':'וארא','Bo':'בא','Beshalach':'בשלח',
+        'Yitro':'יתרו','Mishpatim':'משפטים','Terumah':'תרומה','Tetzaveh':'תצוה',
+        'Ki Tisa':'כי תשא','Vayakhel':'ויקהל','Pekudei':'פקודי','Vayakhel-Pekudei':'ויקהל-פקודי',
+        'Vayikra':'ויקרא','Tzav':'צו','Shmini':'שמיני','Tazria':'תזריע',
+        'Metzora':'מצורע','Tazria-Metzora':'תזריע-מצורע','Achrei Mot':'אחרי מות',
+        'Kedoshim':'קדושים','Achrei Mot-Kedoshim':'אחרי מות-קדושים',
+        'Emor':'אמור','Behar':'בהר','Bechukotai':'בחוקותי','Behar-Bechukotai':'בהר-בחוקותי',
+        'Bamidbar':'במדבר','Nasso':'נשא',"Beha'alotcha":'בהעלותך','Shelach':'שלח',
+        'Korach':'קרח','Chukat':'חוקת','Balak':'בלק','Chukat-Balak':'חוקת-בלק',
+        'Pinchas':'פינחס','Matot':'מטות','Masei':'מסעי','Matot-Masei':'מטות-מסעי',
+        'Devarim':'דברים','Vaetchanan':'ואתחנן','Eikev':'עקב','Reeh':'ראה',
+        'Shoftim':'שופטים','Ki Teitzei':'כי תצא','Ki Tavo':'כי תבוא',
+        'Nitzavim':'נצבים','Vayeilech':'וילך','Nitzavim-Vayeilech':'נצבים-וילך',
+        "Ha'Azinu":'האזינו','Vezot Haberakhah':'וזאת הברכה',
+      };
+      return names.map(n => hebrewNames[n] || n).join('-');
+    }
+    return null;
+  } catch(e) { return null; }
+}
 const HOLIDAYS = {'2025-04-14':'פסח','2025-04-15':'פסח','2025-04-20':'פסח','2025-04-21':'פסח','2025-05-02':'יום העצמאות','2025-06-02':'שבועות','2025-06-03':'שבועות','2025-09-22':'ראש השנה','2025-09-23':'ראש השנה','2025-10-01':'יום כיפור','2025-10-06':'סוכות','2025-10-07':'סוכות','2025-10-14':'שמיני עצרת','2025-10-15':'שמחת תורה','2025-12-14':'חנוכה','2025-12-15':'חנוכה','2025-12-16':'חנוכה','2025-12-17':'חנוכה','2025-12-18':'חנוכה','2025-12-19':'חנוכה','2025-12-20':'חנוכה','2025-12-21':'חנוכה','2026-03-03':'פורים','2026-04-02':'פסח','2026-04-03':'פסח','2026-05-19':'שבועות','2026-05-20':'שבועות'};
 const HEB_NUMS = ['','א\'','ב\'','ג\'','ד\'','ה\'','ו\'','ז\'','ח\'','ט\'','י\'','י"א','י"ב','י"ג','י"ד','ט"ו','ט"ז','י"ז','י"ח','י"ט','כ\'','כ"א','כ"ב','כ"ג','כ"ד','כ"ה','כ"ו','כ"ז','כ"ח','כ"ט','ל\''];
 const GREG_MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
@@ -74,7 +105,7 @@ function MiniCalendar({selectedDate, onSelectDate, minDate, maxDate}) {
           const disabled=!cur||date<minD||date>maxD;
           const selected=selectedDate&&toKey(selectedDate)===key;
           const isToday=key===toKey(today),isSat=date.getDay()===6;
-          const parasha=isSat?PARASHA[key]:null,holiday=HOLIDAYS[key];
+          const parasha=isSat?getParasha(date):null,holiday=HOLIDAYS[key];
           const heb=cur?getHebDay(date):null,hebNum=heb?HEB_NUMS[heb.day]||heb.day:'';
           let bg='var(--clr-bg)';
           if(!cur)bg='var(--clr-bg2)';
@@ -124,7 +155,7 @@ export default function MemberDashboard() {
     e.preventDefault();
     if (!selectedDate) { toast.error('יש לבחור תאריך'); return; }
     const key = toKey(selectedDate);
-    submitMutation.mutate({ ...form, memberName: name, synagogueId: synagogue._id, day: selectedDate.getDay(), shabbatLabel: PARASHA[key] || HOLIDAYS[key] || '', requestDate: key });
+    submitMutation.mutate({ ...form, memberName: name, synagogueId: synagogue._id, day: selectedDate.getDay(), shabbatLabel: getParasha(selectedDate) || HOLIDAYS[key] || '', requestDate: key });
   };
   const statusLabel = s => ({ pending: 'ממתין לאישור', approved: 'אושר', declined: 'נדחה' })[s] || s;
   const selKey = selectedDate ? toKey(selectedDate) : null;
@@ -177,7 +208,7 @@ export default function MemberDashboard() {
             {selectedDate && (
               <div className={styles.selectedInfo}>
                 <div className={styles.selectedDate}>📅 {selectedDate.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                {selKey && PARASHA[selKey] && <div className={styles.selectedExtra}>פרשת {PARASHA[selKey]}</div>}
+                {selectedDate && getParasha(selectedDate) && <div className={styles.selectedExtra}>פרשת {getParasha(selectedDate)}</div>}
                 {selKey && HOLIDAYS[selKey] && <div className={styles.selectedExtra}>🎉 {HOLIDAYS[selKey]}</div>}
               </div>
             )}

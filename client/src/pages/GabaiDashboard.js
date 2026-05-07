@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { HDate, months } from '@hebcal/core';
+import { HDate, months, Sedra } from '@hebcal/core';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -10,29 +10,37 @@ import styles from './GabaiDashboard.module.css';
 
 const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
 
-const PARASHA = {
-  '2025-04-19':'שמיני','2025-04-26':'תזריע-מצורע','2025-05-03':'אחרי מות-קדושים',
-  '2025-05-10':'אמור','2025-05-17':'בהר-בחוקותי','2025-05-24':'במדבר',
-  '2025-06-07':'נשא','2025-06-14':'בהעלותך','2025-06-21':'שלח',
-  '2025-06-28':'קרח','2025-07-05':'חוקת','2025-07-12':'בלק',
-  '2025-07-19':'פינחס','2025-07-26':'מטות-מסעי','2025-08-02':'דברים',
-  '2025-08-09':'ואתחנן','2025-08-16':'עקב','2025-08-23':'ראה',
-  '2025-08-30':'שופטים','2025-09-06':'כי תצא','2025-09-13':'כי תבוא',
-  '2025-09-20':'נצבים-וילך',
-  '2025-10-18':'בראשית','2025-10-25':'נח','2025-11-01':'לך לך',
-  '2025-11-08':'וירא','2025-11-15':'חיי שרה','2025-11-22':'תולדות',
-  '2025-11-29':'ויצא','2025-12-06':'וישלח','2025-12-13':'וישב',
-  '2025-12-20':'מקץ','2025-12-27':'ויגש','2026-01-03':'ויחי',
-  '2026-01-10':'שמות','2026-01-17':'וארא','2026-01-24':'בא',
-  '2026-01-31':'בשלח','2026-02-07':'יתרו','2026-02-14':'משפטים',
-  '2026-02-21':'תרומה','2026-02-28':'תצוה','2026-03-07':'כי תשא',
-  '2026-03-14':'ויקהל','2026-03-21':'פקודי','2026-03-28':'ויקרא',
-  '2026-04-04':'צו','2026-04-25':'שמיני','2026-05-02':'תזריע-מצורע',
-  '2026-05-09':'אחרי מות-קדושים','2026-05-16':'אמור','2026-05-23':'בהר-בחוקותי',
-  '2026-05-30':'במדבר','2026-06-13':'נשא','2026-06-20':'בהעלותך',
-  '2026-06-27':'שלח','2026-07-04':'קרח','2026-07-11':'חוקת-בלק',
-  '2026-07-18':'פינחס','2026-07-25':'מטות-מסעי','2026-08-01':'דברים',
-};
+function getParasha(date) {
+  try {
+    const hd = new HDate(date);
+    const sedra = new Sedra(hd.getFullYear(), false);
+    const abs = HDate.hebrew2abs(hd.getFullYear(), hd.getMonth(), hd.getDate());
+    const parsha = sedra.lookup(abs);
+    if (parsha && parsha.chag === false) {
+      const hebrewNames = {
+        'Bereshit':'בראשית','Noach':'נח','Lech-Lecha':'לך לך','Vayera':'וירא',
+        'Chayei Sara':'חיי שרה','Toldot':'תולדות','Vayetzei':'ויצא','Vayishlach':'וישלח',
+        'Vayeshev':'וישב','Miketz':'מקץ','Vayigash':'ויגש','Vayechi':'ויחי',
+        'Shemot':'שמות','Vaera':'וארא','Bo':'בא','Beshalach':'בשלח',
+        'Yitro':'יתרו','Mishpatim':'משפטים','Terumah':'תרומה','Tetzaveh':'תצוה',
+        'Ki Tisa':'כי תשא','Vayakhel':'ויקהל','Pekudei':'פקודי','Vayakhel-Pekudei':'ויקהל-פקודי',
+        'Vayikra':'ויקרא','Tzav':'צו','Shmini':'שמיני','Tazria':'תזריע',
+        'Metzora':'מצורע','Tazria-Metzora':'תזריע-מצורע','Achrei Mot':'אחרי מות',
+        'Kedoshim':'קדושים','Achrei Mot-Kedoshim':'אחרי מות-קדושים',
+        'Emor':'אמור','Behar':'בהר','Bechukotai':'בחוקותי','Behar-Bechukotai':'בהר-בחוקותי',
+        'Bamidbar':'במדבר','Nasso':'נשא',"Beha'alotcha":'בהעלותך','Shelach':'שלח',
+        'Korach':'קרח','Chukat':'חוקת','Balak':'בלק','Chukat-Balak':'חוקת-בלק',
+        'Pinchas':'פינחס','Matot':'מטות','Masei':'מסעי','Matot-Masei':'מטות-מסעי',
+        'Devarim':'דברים','Vaetchanan':'ואתחנן','Eikev':'עקב','Reeh':'ראה',
+        'Shoftim':'שופטים','Ki Teitzei':'כי תצא','Ki Tavo':'כי תבוא',
+        'Nitzavim':'נצבים','Vayeilech':'וילך','Nitzavim-Vayeilech':'נצבים-וילך',
+        "Ha'Azinu":'האזינו','Vezot Haberakhah':'וזאת הברכה',
+      };
+      return parsha.parsha.map(n => hebrewNames[n] || n).join('-');
+    }
+    return null;
+  } catch(e) { return null; }
+}
 
 const HOLIDAYS = {
   '2025-04-13':'ערב פסח','2025-04-14':'פסח','2025-04-15':'פסח',
@@ -287,7 +295,7 @@ export default function GabaiDashboard() {
                 <>
                   <span className={styles.listTitle}>
                     {selectedDate.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'})}
-                    {PARASHA[toKey(selectedDate)] ? ` · פרשת ${PARASHA[toKey(selectedDate)]}` : ''}
+                    {getParasha(selectedDate) ? ` · פרשת ${getParasha(selectedDate)}` : ''}
                   </span>
                   <button className={styles.clearDate} onClick={() => setSelectedDate(null)}>הצג כל הממתינות ✕</button>
                 </>
@@ -358,7 +366,7 @@ export default function GabaiDashboard() {
                 <div className={styles.listHeader}>
                   <span className={styles.listTitle}>
                     {schedDate.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'})}
-                    {PARASHA[toKey(schedDate)] ? ` · פרשת ${PARASHA[toKey(schedDate)]}` : ''}
+                    {getParasha(schedDate) ? ` · פרשת ${getParasha(schedDate)}` : ''}
                   </span>
                   <button className={styles.clearDate} onClick={() => setSchedDate(null)}>נקה ✕</button>
                 </div>
@@ -455,7 +463,7 @@ export default function GabaiDashboard() {
             <button style={{width:'100%',padding:'0.75rem',background:'var(--navy-700)',color:'#fff',border:'none',borderRadius:'var(--radius-md)',fontSize:14,fontWeight:600,cursor:'pointer',marginBottom:8}}
               onClick={() => {
                 const d = manualForm.requestDate ? new Date(manualForm.requestDate + 'T12:00:00') : new Date();
-                const data = { ...manualForm, synagogueId: synagogue._id, day: manualForm.requestDate ? d.getDay() : 6, shabbatLabel: manualForm.requestDate ? (PARASHA[manualForm.requestDate] || HOLIDAYS[manualForm.requestDate] || '') : '' };
+                const data = { ...manualForm, synagogueId: synagogue._id, day: manualForm.requestDate ? d.getDay() : 6, shabbatLabel: manualForm.requestDate ? (getParasha(new Date(manualForm.requestDate + 'T12:00:00')) || HOLIDAYS[manualForm.requestDate] || '') : '' };
                 if (editReq) editMutation.mutate({ id: editReq._id, data });
                 else createMutation.mutate(data);
               }}
