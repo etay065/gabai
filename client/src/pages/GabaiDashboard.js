@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { HDate, months } from '@hebcal/core';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -60,13 +61,17 @@ function toKey(d) {
 }
 
 function isHebLeap(y){return((7*y)+1)%19<7;}
-function hebElapsed(y){const m=Math.floor((235*y-234)/19);const p=12084+13753*m;let d=m*29+Math.floor(p/25920);if((3*(d+1))%7<3)d++;return d;}
-function hebNewYear(y){const ny=hebElapsed(y),ny2=hebElapsed(y+1),dny=ny2-ny;let c=0;if(dny===356)c=2;else if(dny===382){if((ny-hebElapsed(y-1))===356)c=1;}return 347997+ny+c;}
-function hebMonthLens(y){const diff=hebNewYear(y+1)-hebNewYear(y);if(diff===353)return[30,29,29,29,30,29,0,30,29,30,29,30,29];if(diff===354)return[30,29,30,29,30,29,0,30,29,30,29,30,29];if(diff===355)return[30,30,30,29,30,29,0,30,29,30,29,30,29];if(diff===383)return[30,29,29,29,30,30,29,30,29,30,29,30,29];if(diff===384)return[30,29,30,29,30,30,29,30,29,30,29,30,29];return[30,30,30,29,30,30,29,30,29,30,29,30,29];}
-function gregToJD(y,m,d){if(m<=2){y--;m+=12;}const A=Math.floor(y/100);const B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524;}
-function jdToHeb(jd){let year=Math.floor((jd-347997)*98496/35975351)+1;while(jd>=hebNewYear(year+1))year++;const lens=hebMonthLens(year);let rem=jd-hebNewYear(year);let month=7;while(rem>=(lens[month-1]||0)){rem-=(lens[month-1]||0);month=month===13?1:month+1;}return{year,month,day:rem+1};}
-function getHebDay(date){const jd=gregToJD(date.getFullYear(),date.getMonth()+1,date.getDate());return jdToHeb(Math.floor(jd+0.5));}
-const HEB_MONTH_NAMES=['','ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר','אדר ב׳'];
+function getHebDay(date) {
+  const hd = new HDate(date);
+  return { year: hd.getFullYear(), month: hd.getMonth(), day: hd.getDate(), hdate: hd };
+}
+function getHebMonthName(hd) {
+  const m = hd.getMonth();
+  if (m === months.ADAR_I) return 'אדר א׳';
+  if (m === months.ADAR_II) return 'אדר ב׳';
+  const names = ['','ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר'];
+  return names[m] || '';
+}
 
 function getCalDays(year,month){
   const first=new Date(year,month,1),last=new Date(year,month+1,0),days=[];
@@ -96,7 +101,7 @@ function MiniCalendar({selectedDate, onSelectDate, markedDates={}}){
         <button onClick={goFwd} disabled={!canFwd} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>›</button>
         <div style={{textAlign:'center'}}>
           <div style={{fontSize:13,fontWeight:700,color:'#fff'}}>{GREG_MONTHS_HE[vm]} {vy}</div>
-          <div style={{fontSize:10,color:'var(--navy-300)'}}>{HEB_MONTH_NAMES[mh.month]} {mh.year}</div>
+          <div style={{fontSize:10,color:'var(--navy-300)'}}>{hebMonthStr} {mh.year}</div>
         </div>
         <button onClick={goBack} disabled={!canBack} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>‹</button>
       </div>
