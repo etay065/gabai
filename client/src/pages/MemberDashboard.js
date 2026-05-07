@@ -12,7 +12,7 @@ const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שי
 function getParasha(date) {
   try {
     const hd = new HDate(date);
-    const sedra = new Sedra(hd.getFullYear(), false);
+    const sedra = new Sedra(hd.getFullYear(), true);
     const abs = HDate.hebrew2abs(hd.getFullYear(), hd.getMonth(), hd.getDate());
     const parsha = sedra.lookup(abs);
     if (parsha && parsha.chag === false) {
