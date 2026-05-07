@@ -124,7 +124,7 @@ function MiniCalendar({selectedDate, onSelectDate, markedDates={}}){
           const selected=selectedDate&&toKey(selectedDate)===key;
           const isToday=key===toKey(today);
           const isSat=date.getDay()===6;
-          const parasha=isSat?PARASHA[key]:null;
+          const parasha=isSat?getParasha(date):null;
           const holiday=HOLIDAYS[key];
           const marked=markedDates[key];
           const heb=cur?getHebDay(date):null;
