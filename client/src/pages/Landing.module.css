@@ -5,132 +5,135 @@
   justify-content: center;
   min-height: 100vh;
   padding: 2rem 1.5rem;
-  background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-700) 55%, var(--navy-500) 100%);
+  background: linear-gradient(145deg, #0D1B2E 0%, #152540 50%, #1E3A5F 100%);
   position: relative;
   overflow: hidden;
 }
-
-/* decorative star-of-david pattern */
 .page::before {
-  content: '✡';
+  content: '';
   position: absolute;
-  font-size: 320px;
-  opacity: 0.04;
-  top: -60px;
-  left: -80px;
-  color: #fff;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,181,42,0.08) 0%, transparent 70%);
+  top: -100px; left: -100px;
   pointer-events: none;
-  line-height: 1;
 }
 .page::after {
-  content: '✡';
+  content: '';
   position: absolute;
-  font-size: 200px;
-  opacity: 0.03;
-  bottom: -40px;
-  right: -30px;
-  color: var(--gold-300);
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,90,160,0.2) 0%, transparent 70%);
+  bottom: -80px; right: -80px;
   pointer-events: none;
-  line-height: 1;
 }
-
 .inner {
   position: relative;
   z-index: 1;
   text-align: center;
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
 }
-
 .logoWrap {
-  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
+  margin-bottom: 2rem;
 }
-.logoEmoji {
-  font-size: 52px;
-  display: block;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+.logoMark {
+  position: relative;
+  width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
 }
+.logoMark::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,181,42,0.15) 0%, transparent 70%);
+  filter: blur(8px);
+}
+.logoSvg {
+  width: 72px; height: 72px;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgba(232,181,42,0.4));
+}
+.logoTextWrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .logoText {
-  font-size: 36px;
-  font-weight: 700;
+  font-size: 38px;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 .logoAI {
-  color: var(--gold-400);
+  background: linear-gradient(135deg, #E8B52A, #F5D87A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 4px;
-  letter-spacing: -0.01em;
-}
-.city {
-  font-size: 15px;
-  color: var(--navy-200);
-  margin-bottom: 10px;
-}
-.parasha {
-  display: inline-block;
+.logoTagline {
   font-size: 13px;
-  color: var(--navy-900);
-  background: var(--gold-400);
-  padding: 4px 14px;
-  border-radius: 20px;
-  font-weight: 600;
-  margin-bottom: 0;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.08em;
+  font-weight: 400;
 }
-
 .divider {
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
-  margin: 1.75rem auto;
-  border-radius: 1px;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,181,42,0.5), transparent);
+  margin: 0 auto 2rem;
 }
-
 .cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
-
 .card {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 18px;
-  padding: 1.75rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 1.75rem 1rem 1.5rem;
   cursor: pointer;
   text-align: center;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
 }
 .card:hover {
-  background: rgba(255,255,255,0.13);
-  border-color: var(--gold-400);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(232,181,42,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(232,181,42,0.2);
 }
-.card:active { transform: scale(0.97); }
-
-.cardIcon  { font-size: 34px; margin-bottom: 0.75rem; display: block; }
-.cardTitle { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
-.cardDesc  { font-size: 12px; color: var(--navy-200); line-height: 1.4; }
-
+.card:active { transform: scale(0.97) translateY(0); }
+.cardIconWrap {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.cardIcon  { font-size: 26px; }
+.cardTitle { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 5px; }
+.cardDesc  { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.4; }
 .footer {
   position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: rgba(255,255,255,0.25);
+  bottom: 1.25rem;
+  left: 50%; transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(255,255,255,0.18);
   white-space: nowrap;
+  letter-spacing: 0.05em;
 }
