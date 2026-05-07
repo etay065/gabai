@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -6,15 +6,47 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import styles from './AuctionPage.module.css';
 
-function timeLeft(endTime) {
-  const diff = new Date(endTime) - new Date();
-  if (diff <= 0) return 'הסתיים';
-  const h = Math.floor(diff / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  if (h > 0) return `${h}ש' ${m}ד'`;
-  if (m > 0) return `${m}ד' ${s}ש''`;
-  return `${s} שניות`;
+function Countdown({ endTime }) {
+  const calc = () => {
+    const diff = new Date(endTime) - new Date();
+    if (diff <= 0) return null;
+    return {
+      d: Math.floor(diff / 86400000),
+      h: Math.floor((diff % 86400000) / 3600000),
+      m: Math.floor((diff % 3600000) / 60000),
+      s: Math.floor((diff % 60000) / 1000),
+    };
+  };
+  const [t, setT] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setT(calc()), 1000);
+    return () => clearInterval(id);
+  }, [endTime]);
+  if (!t) return <span className={styles.countdownEnded}>הסתיים</span>;
+  return (
+    <div className={styles.countdown}>
+      {t.d > 0 && (
+        <div className={styles.countUnit}>
+          <span className={styles.countNum}>{t.d}</span>
+          <span className={styles.countLabel}>ימים</span>
+        </div>
+      )}
+      <div className={styles.countUnit}>
+        <span className={styles.countNum}>{String(t.h).padStart(2,'0')}</span>
+        <span className={styles.countLabel}>שעות</span>
+      </div>
+      <div className={styles.countSep}>:</div>
+      <div className={styles.countUnit}>
+        <span className={styles.countNum}>{String(t.m).padStart(2,'0')}</span>
+        <span className={styles.countLabel}>דקות</span>
+      </div>
+      <div className={styles.countSep}>:</div>
+      <div className={styles.countUnit}>
+        <span className={styles.countNum}>{String(t.s).padStart(2,'0')}</span>
+        <span className={styles.countLabel}>שניות</span>
+      </div>
+    </div>
+  );
 }
 
 function statusLabel(s) {
@@ -23,7 +55,6 @@ function statusLabel(s) {
 
 // ── GABAI VIEW ────────────────────────────────────────────────────────────────
 function GabaiAuctions({ synagogue }) {
-  const navigate = useNavigate();
   const qc = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', startPrice: '', startTime: '', endTime: '' });
@@ -53,10 +84,9 @@ function GabaiAuctions({ synagogue }) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
-        <div className={styles.topBarTitle}>התמחרויות</div>
-        <button className={styles.addBtn} onClick={() => setShowForm(true)}>+ חדש</button>
+      <div className={styles.header}>
+        <h2 className={styles.title}>התמחרויות</h2>
+        <button className={styles.addBtn} onClick={() => setShowForm(true)}>+ התמחרות חדשה</button>
       </div>
 
       {isLoading && <div className={styles.empty}>טוען...</div>}
@@ -79,7 +109,7 @@ function GabaiAuctions({ synagogue }) {
             </div>
             <div className={styles.priceBox}>
               <div className={styles.priceLabel}>{a.status === 'ended' ? 'זוכה' : 'זמן שנותר'}</div>
-              <div className={styles.priceValue}>{a.status === 'ended' ? (a.winner || 'אין הצעות') : timeLeft(a.endTime)}</div>
+              <div className={styles.priceValue}>{a.status === 'ended' ? (a.winner || 'אין הצעות') : <Countdown endTime={a.endTime} />}</div>
             </div>
             <div className={styles.priceBox}>
               <div className={styles.priceLabel}>הצעות</div>
@@ -135,7 +165,6 @@ function GabaiAuctions({ synagogue }) {
 
 // ── MEMBER VIEW ───────────────────────────────────────────────────────────────
 function MemberAuctions({ synagogue, memberName }) {
-  const navigate = useNavigate();
   const qc = useQueryClient();
   const [bidAmounts, setBidAmounts] = useState({});
 
@@ -158,10 +187,8 @@ function MemberAuctions({ synagogue, memberName }) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
-        <div className={styles.topBarTitle}>התמחרויות</div>
-        <div></div>
+      <div className={styles.header}>
+        <h2 className={styles.title}>התמחרויות</h2>
       </div>
 
       {isLoading && <div className={styles.empty}>טוען...</div>}
@@ -175,7 +202,7 @@ function MemberAuctions({ synagogue, memberName }) {
               <div className={styles.cardTitle}>{a.title}</div>
               {a.description && <div className={styles.cardDesc}>{a.description}</div>}
             </div>
-            <div className={styles.timeLeft}>⏱ {timeLeft(a.endTime)}</div>
+            <div className={styles.timeLeft}><Countdown endTime={a.endTime} /></div>
           </div>
 
           <div className={styles.currentBid}>
