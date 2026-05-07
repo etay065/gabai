@@ -67,10 +67,10 @@ export default function MemberEntry() {
             {synError && <span className={styles.synError}>{synError}</span>}
             <div className={styles.synList}>
               {isLoading && <Loader />}
-              {!isLoading && filtered.length === 0 && (
+              {search.trim() && !isLoading && filtered.length === 0 && (
                 <div className={styles.synEmpty}>לא נמצאו בתי כנסת</div>
               )}
-              {filtered.map(s => (
+              {search.trim() && filtered.map(s => (
                 <div
                   key={s._id}
                   className={`${styles.synItem} ${selectedSyn?._id === s._id ? styles.synItemSel : ''}`}
