@@ -102,6 +102,7 @@ function MiniCalendar({selectedDate, onSelectDate, markedDates={}}){
   const goBack=()=>{if(vm===0){setVm(11);setVy(y=>y-1);}else setVm(m=>m-1);};
   const goFwd=()=>{if(vm===11){setVm(0);setVy(y=>y+1);}else setVm(m=>m+1);};
   const mid=new Date(vy,vm,15),mh=getHebDay(mid);
+  const hebMonthStr=getHebMonthName(mh.hdate);
 
   return(
     <div style={{border:'1px solid var(--clr-border)',borderRadius:'var(--radius-lg)',overflow:'hidden',marginBottom:'1rem',direction:'rtl'}}>
