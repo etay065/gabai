@@ -190,7 +190,7 @@ export default function MemberDashboard() {
                 </div>
                 {form.type === 'תפילה' ? (
                   <Select label="איזו תפילה?" value={form.sub} onChange={e => setForm(f => ({ ...f, sub: e.target.value }))}>
-                    {(isSaturday ? ['שחרית', 'מוסף', 'מנחה', 'מעריב'] : ['שחרית', 'מנחה', 'מעריב']).map(p => <option key={p}>{p}</option>)}
+                    {(isSaturday ? ['שחרית', 'מוסף', 'מנחה', 'מעריב'] : selectedDate?.getDay() === 5 ? ['שחרית', 'מנחה', 'קבלת שבת', 'מעריב'] : ['שחרית', 'מנחה', 'מעריב']).map(p => <option key={p}>{p}</option>)}
                   </Select>
                 ) : form.type === 'קריאת תורה' ? (
                   <Select label="עלייה לתורה" value={form.sub} onChange={e => setForm(f => ({ ...f, sub: e.target.value }))}>
