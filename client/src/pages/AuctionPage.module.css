@@ -1,7 +1,6 @@
 .page { padding: 1.25rem; max-width: 680px; margin: 0 auto; }
 
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-.title  { font-size: 18px; font-weight: 700; }
 
 .addBtn {
   padding: 8px 16px; border-radius: var(--radius-md);
@@ -143,3 +142,32 @@
   color: var(--clr-text2);
   font-weight: 600;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  height: 52px;
+  background: var(--navy-900);
+  margin: -1.25rem -1.25rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header .title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.backBtn {
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  background: transparent;
+  cursor: pointer;
+}
+.backBtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
