@@ -23,6 +23,7 @@ function statusLabel(s) {
 
 // ── GABAI VIEW ────────────────────────────────────────────────────────────────
 function GabaiAuctions({ synagogue }) {
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', startPrice: '', startTime: '', endTime: '' });
@@ -53,6 +54,7 @@ function GabaiAuctions({ synagogue }) {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
         <h2 className={styles.title}>התמחרויות</h2>
         <button className={styles.addBtn} onClick={() => setShowForm(true)}>+ התמחרות חדשה</button>
       </div>
@@ -133,6 +135,7 @@ function GabaiAuctions({ synagogue }) {
 
 // ── MEMBER VIEW ───────────────────────────────────────────────────────────────
 function MemberAuctions({ synagogue, memberName }) {
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const [bidAmounts, setBidAmounts] = useState({});
 
@@ -156,6 +159,7 @@ function MemberAuctions({ synagogue, memberName }) {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
         <h2 className={styles.title}>התמחרויות</h2>
       </div>
 
