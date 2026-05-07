@@ -103,3 +103,39 @@
 .cancelBtn { width: 100%; padding: 0.65rem; background: transparent; border: 1px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 13px; color: var(--clr-text2); cursor: pointer; }
 
 .empty { text-align: center; padding: 3rem 1rem; color: var(--clr-text3); font-size: 14px; }
+
+.backBtn {
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  background: transparent;
+  cursor: pointer;
+}
+.backBtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  height: 52px;
+  background: var(--navy-900);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: -1.25rem -1.25rem 1.25rem;
+}
+.topBarTitle { font-size: 15px; font-weight: 700; color: #fff; }
+.backBtn {
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  background: transparent; cursor: pointer;
+}
+.backBtn:hover { background: rgba(255,255,255,0.1); color: #fff; }

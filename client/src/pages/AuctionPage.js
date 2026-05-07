@@ -53,10 +53,10 @@ function GabaiAuctions({ synagogue }) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
+      <div className={styles.topBar}>
         <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
-        <h2 className={styles.title}>התמחרויות</h2>
-        <button className={styles.addBtn} onClick={() => setShowForm(true)}>+ התמחרות חדשה</button>
+        <div className={styles.topBarTitle}>התמחרויות</div>
+        <button className={styles.addBtn} onClick={() => setShowForm(true)}>+ חדש</button>
       </div>
 
       {isLoading && <div className={styles.empty}>טוען...</div>}
@@ -158,9 +158,10 @@ function MemberAuctions({ synagogue, memberName }) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
+      <div className={styles.topBar}>
         <button className={styles.backBtn} onClick={() => navigate(-1)}>← חזרה</button>
-        <h2 className={styles.title}>התמחרויות</h2>
+        <div className={styles.topBarTitle}>התמחרויות</div>
+        <div></div>
       </div>
 
       {isLoading && <div className={styles.empty}>טוען...</div>}
