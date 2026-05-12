@@ -271,3 +271,14 @@
 .modalSheet { background: var(--clr-bg); border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding: 1.5rem 1.5rem 2.5rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; direction: rtl; }
 .modalHandle { width: 36px; height: 4px; background: var(--clr-border2); border-radius: 2px; margin: 0 auto 1.25rem; }
 .modalTitle { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
+
+.headerBtns { display: flex; align-items: center; gap: 6px; }
+.iconBtn {
+  width: 34px; height: 34px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.iconBtn:hover { background: rgba(255,255,255,0.1); }

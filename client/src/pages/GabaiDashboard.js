@@ -256,9 +256,11 @@ export default function GabaiDashboard() {
           <div className={styles.headerTitle}>Gab-AI · לוח הגבאי</div>
           <div className={styles.headerSub}>{synagogue?.name}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}</div>
         </div>
-        <button className={styles.auctionBtn} onClick={() => navigate("/auctions")}>🏷️ התמחרויות</button>
-        <button className={styles.auctionBtn} onClick={() => navigate("/members")}>👥 מתפללים</button>
-        <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>יציאה</button>
+        <div className={styles.headerBtns}>
+          <button className={styles.iconBtn} onClick={() => navigate("/members")} title="מתפללים">👥</button>
+          <button className={styles.iconBtn} onClick={() => navigate("/auctions")} title="התמחרויות">🏷️</button>
+          <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>יציאה</button>
+        </div>
       </header>
 
       <nav className={styles.tabs}>
