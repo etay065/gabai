@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { Input, Button, Loader } from '../components/UI';
+import { Button, Loader } from '../components/UI';
 import api from '../api/client';
 import styles from './MemberEntry.module.css';
 
 export default function MemberEntry() {
   const { setMemberName, chooseMemberSynagogue } = useAuth();
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [selectedSyn, setSelectedSyn] = useState(null);
-  const [nameError, setNameError] = useState('');
-  const [synError, setSynError] = useState('');
   const [search, setSearch] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { data: synagogues = [], isLoading } = useQuery({
     queryKey: ['synagogues'],
@@ -24,15 +24,27 @@ export default function MemberEntry() {
     s.name.includes(search) || s.city.includes(search)
   );
 
-  const handle = e => {
+  const handle = async e => {
     e.preventDefault();
-    let ok = true;
-    if (!name.trim()) { setNameError('יש להזין שם'); ok = false; }
-    if (!selectedSyn)  { setSynError('יש לבחור בית כנסת'); ok = false; }
-    if (!ok) return;
-    setMemberName(name.trim());
-    chooseMemberSynagogue(selectedSyn);
-    navigate('/member/dashboard');
+    if (!username.trim()) { setError('יש להזין שם משתמש'); return; }
+    if (!selectedSyn) { setError('יש לבחור בית כנסת'); return; }
+
+    setLoading(true);
+    setError('');
+    try {
+      const res = await api.get('/members/login', {
+        params: { username: username.trim(), synagogueId: selectedSyn._id }
+      });
+      const member = res.data;
+      setMemberName(member.firstName + ' ' + member.lastName);
+      chooseMemberSynagogue(selectedSyn);
+      sessionStorage.setItem('member_id', member._id);
+      navigate('/member/dashboard');
+    } catch (err) {
+      setError('שם משתמש לא נמצא בבית כנסת זה');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,20 +53,22 @@ export default function MemberEntry() {
         <div className={styles.backRow}>
           <span className={styles.backLink} onClick={() => navigate('/')}>← חזרה לדף הבית</span>
         </div>
-
         <div className={styles.iconWrap}>🙏</div>
         <h2 className={styles.title}>כניסת מתפלל</h2>
-        <p className={styles.sub}>ללא צורך בסיסמה — רק שם ובית כנסת</p>
+        <p className={styles.sub}>הזן שם משתמש ובחר בית כנסת</p>
 
         <form onSubmit={handle}>
-          <Input
-            label="שם מלא"
-            value={name}
-            onChange={e => { setName(e.target.value); setNameError(''); }}
-            placeholder="ישראל ישראלי"
-            error={nameError}
-            autoFocus
-          />
+          <div className={styles.fieldGroup}>
+            <label className={styles.fieldLabel}>שם משתמש</label>
+            <input
+              className={styles.fieldInput}
+              value={username}
+              onChange={e => { setUsername(e.target.value); setError(''); }}
+              placeholder="israel123"
+              dir="ltr"
+              autoFocus
+            />
+          </div>
 
           <div className={styles.synSection}>
             <label className={styles.synLabel}>בחר בית כנסת</label>
@@ -64,7 +78,6 @@ export default function MemberEntry() {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {synError && <span className={styles.synError}>{synError}</span>}
             <div className={styles.synList}>
               {isLoading && <Loader />}
               {search.trim() && !isLoading && filtered.length === 0 && (
@@ -74,7 +87,7 @@ export default function MemberEntry() {
                 <div
                   key={s._id}
                   className={`${styles.synItem} ${selectedSyn?._id === s._id ? styles.synItemSel : ''}`}
-                  onClick={() => { setSelectedSyn(s); setSynError(''); }}
+                  onClick={() => { setSelectedSyn(s); setError(''); }}
                 >
                   <div className={styles.synName}>{s.name}</div>
                   <div className={styles.synCity}>{s.city}</div>
@@ -84,7 +97,11 @@ export default function MemberEntry() {
             </div>
           </div>
 
-          <Button type="submit">המשך →</Button>
+          {error && <div className={styles.errorMsg}>{error}</div>}
+
+          <Button type="submit" disabled={loading}>
+            {loading ? 'מאמת...' : 'כניסה →'}
+          </Button>
         </form>
 
         <Button variant="secondary" onClick={() => navigate('/')} style={{ marginTop: 10 }}>
