@@ -1,0 +1,79 @@
+.page { min-height: 100vh; background: var(--clr-bg); display: flex; flex-direction: column; }
+
+/* ── TOP BAR ── */
+.topBar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.25rem; height: 52px;
+  background: var(--navy-900);
+  position: sticky; top: 0; z-index: 10;
+}
+.topBarTitle { font-size: 15px; font-weight: 700; color: #fff; }
+.backBtn { padding: 6px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-md); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8); background: transparent; cursor: pointer; }
+.backBtn:hover { background: rgba(255,255,255,0.1); }
+.addBtn { padding: 6px 14px; border-radius: var(--radius-md); background: var(--gold-400); color: var(--navy-900); border: none; font-size: 13px; font-weight: 700; cursor: pointer; }
+.addBtn:hover { background: var(--gold-300); }
+
+/* ── BODY ── */
+.body { padding: 1.25rem; max-width: 680px; margin: 0 auto; width: 100%; }
+
+/* ── STATS ── */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 1.25rem; }
+.stat { background: var(--clr-bg); border: 1px solid var(--clr-border); border-radius: var(--radius-md); padding: 10px 8px; text-align: center; }
+.statDebt { border-color: #FAC0C0; background: #FFF5F5; }
+.statNum { font-size: 18px; font-weight: 700; color: var(--navy-700); }
+.statLbl { font-size: 10px; color: var(--clr-text2); margin-top: 2px; }
+
+/* ── SEARCH ── */
+.searchInput { width: 100%; padding: 10px 14px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-lg); font-size: 14px; background: var(--clr-bg); color: var(--clr-text); direction: rtl; margin-bottom: 1rem; font-family: inherit; }
+.searchInput:focus { outline: none; border-color: var(--navy-500); }
+
+/* ── CARD ── */
+.card { background: var(--clr-bg); border: 1px solid var(--clr-border); border-radius: var(--radius-lg); padding: 12px 14px; margin-bottom: 10px; }
+.cardMain { display: flex; align-items: center; gap: 12px; }
+.cardAvatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+.cardInfo { flex: 1; min-width: 0; }
+.cardName { font-size: 15px; font-weight: 700; }
+.cardSub { font-size: 12px; color: var(--clr-text2); margin: 2px 0 5px; }
+.username { font-family: monospace; color: var(--navy-600); }
+.tribeBadge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.cardRight { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.balance { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+.balanceDebt { background: #FFF0F0; color: #C0392B; }
+.balanceCredit { background: #F0FFF4; color: #27AE60; }
+.cardActions { display: flex; gap: 4px; }
+.actionBtn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--clr-border); background: var(--clr-bg); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.actionBtn:hover { background: var(--navy-50); }
+.notes { font-size: 12px; color: var(--clr-text2); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--clr-border); }
+
+/* ── MODAL ── */
+.modalBg { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 50; }
+.modal { background: var(--clr-bg); border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding: 1.5rem 1.5rem 2.5rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; direction: rtl; }
+.modalHandle { width: 36px; height: 4px; background: var(--clr-border2); border-radius: 2px; margin: 0 auto 1.25rem; }
+.modalTitle { font-size: 17px; font-weight: 700; margin-bottom: 1.25rem; }
+
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field { margin-bottom: 0.9rem; display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 12px; font-weight: 600; color: var(--clr-text2); }
+.field input, .field textarea { padding: 9px 11px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 14px; background: var(--clr-bg); color: var(--clr-text); font-family: inherit; direction: rtl; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--navy-500); }
+.field textarea { resize: vertical; }
+
+.tribeGrid { display: flex; gap: 8px; }
+.tribePill { flex: 1; padding: 8px 4px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); background: var(--clr-bg); font-size: 13px; font-weight: 600; cursor: pointer; }
+.tribePillSel { border-width: 2px; }
+
+.submitBtn { width: 100%; padding: 0.75rem; background: var(--navy-700); color: #fff; border: none; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+.submitBtn:disabled { opacity: 0.4; }
+.cancelBtn { width: 100%; padding: 0.65rem; background: transparent; border: 1px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 13px; color: var(--clr-text2); cursor: pointer; }
+
+/* ── BALANCE MODAL ── */
+.balanceCurrent { background: var(--clr-bg2); border-radius: var(--radius-md); padding: 14px; text-align: center; margin-bottom: 1rem; }
+.balanceLabel { font-size: 12px; color: var(--clr-text2); margin-bottom: 6px; }
+.balanceValue { font-size: 24px; font-weight: 700; }
+.balanceActions { margin-bottom: 0.5rem; }
+.balanceActionBtn { width: 100%; padding: 10px; background: var(--green-100, #D4F0DC); color: var(--green-700, #1A5C2A); border: none; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; }
+.balanceInput { display: flex; gap: 8px; }
+.balanceInput input { flex: 1; padding: 9px 11px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 14px; background: var(--clr-bg); color: var(--clr-text); direction: ltr; font-family: inherit; }
+.balanceInput button { padding: 9px 16px; background: var(--navy-700); color: #fff; border: none; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; }
+
+.empty { text-align: center; padding: 3rem 1rem; color: var(--clr-text3); font-size: 14px; }
