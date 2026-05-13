@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import { Badge, Card, Button, Loader, EmptyState } from '../components/UI';
+import { useLang } from '../i18n/LanguageContext';
 import styles from './GabaiDashboard.module.css';
 
 const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
@@ -200,6 +201,7 @@ export default function GabaiDashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const synagogue = gabai?.synagogue;
+  const { t, lang, toggleLang } = useLang();
 
   const [tab, setTab] = useState('requests');
   const [selectedDate, setSelectedDate] = useState(null);
@@ -291,9 +293,10 @@ export default function GabaiDashboard() {
           <div className={styles.headerSub}>{synagogue?.name}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}</div>
         </div>
         <div className={styles.headerBtns}>
-          <button className={styles.iconBtn} onClick={() => navigate("/members")} title="מתפללים">👥</button>
-          <button className={styles.iconBtn} onClick={() => navigate("/auctions")} title="התמחרויות">🏷️</button>
-          <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>יציאה</button>
+          <button className={styles.iconBtn} onClick={toggleLang} title="language">{lang === 'he' ? 'EN' : 'עב'}</button>
+          <button className={styles.iconBtn} onClick={() => navigate("/members")} title="members">👥</button>
+          <button className={styles.iconBtn} onClick={() => navigate("/auctions")} title="auctions">🏷️</button>
+          <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>{t('gabai.exit')}</button>
         </div>
       </header>
 

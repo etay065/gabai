@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLang } from '../i18n/LanguageContext';
 import styles from './Landing.module.css';
 
 export default function Landing() {
   const { gabai } = useAuth();
+  const { t, lang, toggleLang } = useLang();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,19 +46,20 @@ export default function Landing() {
             <div className={styles.cardIconWrap}>
               <span className={styles.cardIcon}>🙏</span>
             </div>
-            <div className={styles.cardTitle}>כניסת מתפלל</div>
-            <div className={styles.cardDesc}>הגשת בקשות לתפילה</div>
+            <div className={styles.cardTitle}>{t('landing.member')}</div>
+            <div className={styles.cardDesc}>{t('landing.member.desc')}</div>
           </div>
           <div className={styles.card} onClick={() => navigate('/gabai/login')} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('/gabai/login')}>
             <div className={styles.cardIconWrap}>
               <span className={styles.cardIcon}>📋</span>
             </div>
-            <div className={styles.cardTitle}>כניסת גבאי</div>
-            <div className={styles.cardDesc}>ניהול לוח ואישור בקשות</div>
+            <div className={styles.cardTitle}>{t('landing.gabai')}</div>
+            <div className={styles.cardDesc}>{t('landing.gabai.desc')}</div>
           </div>
         </div>
       </div>
-      <div className={styles.footer}>Gab-AI · ניהול חכם לבית הכנסת</div>
+      <button onClick={toggleLang} className={styles.langBtn}>{lang === 'he' ? 'EN' : 'עב'}</button>
+      <div className={styles.footer}>{t('landing.footer')}</div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import { Card, Badge, Button, Select, Textarea, Loader, EmptyState } from '../components/UI';
+import { useLang } from '../i18n/LanguageContext';
 import styles from './MemberDashboard.module.css';
 
 const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
@@ -185,6 +186,7 @@ export default function MemberDashboard() {
   const [showCal, setShowCal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [form, setForm] = useState({ type: 'תפילה', sub: 'שחרית', reason: '' });
+  const { t, lang, toggleLang } = useLang();
   const synagogue = memberSynagogue || JSON.parse(sessionStorage.getItem('member_synagogue') || 'null');
   const name = memberName || sessionStorage.getItem('member_name') || '';
   const today = new Date(); today.setHours(0,0,0,0);
@@ -218,7 +220,8 @@ export default function MemberDashboard() {
           <div className={styles.headerSub}>שלום, {name} - {synagogue.name}</div>
         </div>
         <button className={styles.auctionBtn} onClick={() => navigate('/auctions')}>🏷️</button>
-        <button className={styles.backBtn} onClick={() => navigate('/')}>יציאה</button>
+        <button className={styles.auctionBtn} onClick={toggleLang}>{lang === 'he' ? 'EN' : 'עב'}</button>
+        <button className={styles.backBtn} onClick={() => navigate('/')}>{t('member.exit')}</button>
       </header>
       <main className={styles.body}>
         <div className={styles.synBanner}>
