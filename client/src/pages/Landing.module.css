@@ -43,7 +43,7 @@
 }
 .logoMark {
   position: relative;
-  width: 80px; height: 80px;
+  width: 150px; height: 150px;
   display: flex; align-items: center; justify-content: center;
 }
 .logoMark::before {
@@ -55,7 +55,7 @@
   filter: blur(8px);
 }
 .logoSvg {
-  width: 72px; height: 72px;
+  width: 140px; height: 140px;
   position: relative;
   filter: drop-shadow(0 0 20px rgba(232,181,42,0.4));
 }

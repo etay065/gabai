@@ -287,7 +287,7 @@ export default function GabaiDashboard() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <div className={styles.avatar}>{gabai?.username?.charAt(0)?.toUpperCase()}</div>
+        <img src="/logo-transparent.png" alt="logo" style={{width:36,height:36,objectFit:"contain",marginLeft:6}} />
         <div className={styles.headerInfo}>
           <div className={styles.headerTitle}>Gab-AI · לוח הגבאי</div>
           <div className={styles.headerSub}>{synagogue?.name}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}</div>
