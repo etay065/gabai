@@ -214,7 +214,7 @@ export default function MemberDashboard() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <img src="/logo-transparent.png" alt="logo" style={{width:36,height:36,objectFit:"contain",marginLeft:6}} />
+        <img src="/logo-transparent.png" alt="logo" style={{width:44,height:44,objectFit:"contain",marginLeft:6}} />
         <div className={styles.headerInfo}>
           <div className={styles.headerTitle}>Gab-AI</div>
           <div className={styles.headerSub}>שלום, {name} - {synagogue.name}</div>
