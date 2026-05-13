@@ -18,20 +18,7 @@ export default function Landing() {
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <div className={styles.logoMark}>
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.logoSvg}>
-              <circle cx="32" cy="32" r="30" stroke="url(#lg1)" strokeWidth="2.5"/>
-              <path d="M32 10 L38 22 L51 22 L41 30 L45 43 L32 35 L19 43 L23 30 L13 22 L26 22 Z" fill="url(#lg2)" opacity="0.9"/>
-              <defs>
-                <linearGradient id="lg1" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#E8B52A"/>
-                  <stop offset="100%" stopColor="#F5D87A"/>
-                </linearGradient>
-                <linearGradient id="lg2" x1="13" y1="10" x2="51" y2="43" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#F5D87A"/>
-                  <stop offset="100%" stopColor="#E8B52A"/>
-                </linearGradient>
-              </defs>
-            </svg>
+            <img src="/logo-transparent.png" alt="Gab-AI" className={styles.logoSvg} />
           </div>
           <div className={styles.logoTextWrap}>
             <div className={styles.logoText}>Gab<span className={styles.logoAI}>-AI</span></div>
