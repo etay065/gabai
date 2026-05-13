@@ -21,7 +21,6 @@ export default function Landing() {
             <img src="/logo-transparent.png" alt="Gab-AI" className={styles.logoSvg} />
           </div>
           <div className={styles.logoTextWrap}>
-            <div className={styles.logoText}>Gab<span className={styles.logoAI}>-AI</span></div>
             <div className={styles.logoTagline}>מערכת ניהול בית כנסת</div>
           </div>
         </div>
