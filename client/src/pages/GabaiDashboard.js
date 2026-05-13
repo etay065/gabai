@@ -294,6 +294,7 @@ export default function GabaiDashboard() {
         </div>
         <div className={styles.headerBtns}>
           <button className={styles.iconBtn} onClick={toggleLang} title="language">{lang === 'he' ? 'EN' : 'עב'}</button>
+          <button className={styles.iconBtn} onClick={() => navigate("/announce")} title="לוח זמנים">📢</button>
           <button className={styles.iconBtn} onClick={() => navigate("/members")} title="members">👥</button>
           <button className={styles.iconBtn} onClick={() => navigate("/auctions")} title="auctions">🏷️</button>
           <button className={styles.logoutBtn} onClick={() => { logoutGabai(); navigate('/'); }}>{t('gabai.exit')}</button>

@@ -8,6 +8,7 @@ import MemberEntry from './pages/MemberEntry';
 import MemberDashboard from './pages/MemberDashboard';
 import AuctionPage from './pages/AuctionPage';
 import MembersPage from './pages/MembersPage';
+import AnnouncePage from './pages/AnnouncePage';
 import { useAuth } from './context/AuthContext';
 
 function ProtectedGabai({ children }) {
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/member/dashboard" element={<MemberDashboard />} />
       <Route path="/auctions" element={<AuctionPage />} />
       <Route path="/members" element={<MembersPage />} />
+      <Route path="/announce" element={<AnnouncePage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
