@@ -63,10 +63,11 @@ export default function AnnouncePage() {
     queryKey: ['announceTemplate', synagogue?._id],
     queryFn: () => api.get('/settings/announce-template').then(r => r.data),
     enabled: !!synagogue?._id,
-    onSuccess: (data) => {
-      if (data.template) setTemplate(data.template);
-    }
   });
+
+  useEffect(() => {
+    if (serverTemplate?.template) setTemplate(serverTemplate.template);
+  }, [serverTemplate]);
 
   const saveTemplateMutation = useMutation({
     mutationFn: (tmpl) => api.put('/settings/announce-template', { template: tmpl }),
