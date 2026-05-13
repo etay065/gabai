@@ -51,3 +51,17 @@
 .shareBtn2:hover { background: var(--navy-800); }
 .copyBtn { width: 100%; padding: 0.7rem; background: transparent; border: 1px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 14px; color: var(--clr-text2); cursor: pointer; }
 .copyBtn:hover { background: var(--clr-bg2); }
+
+.saveServerBtn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: var(--navy-700);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.saveServerBtn:hover { background: var(--navy-800); }

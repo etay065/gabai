@@ -28,3 +28,30 @@ router.put('/', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
+// GET /api/settings/announce-template
+router.get('/announce-template', authMiddleware, async (req, res) => {
+  try {
+    const Settings = require('../models/Settings');
+    const s = await Settings.findOne({ synagogueId: req.user.synagogueId });
+    res.json({ template: s?.announceTemplate || null });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// PUT /api/settings/announce-template
+router.put('/announce-template', authMiddleware, async (req, res) => {
+  try {
+    const Settings = require('../models/Settings');
+    const { template } = req.body;
+    await Settings.findOneAndUpdate(
+      { synagogueId: req.user.synagogueId },
+      { announceTemplate: template },
+      { upsert: true, new: true }
+    );
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});

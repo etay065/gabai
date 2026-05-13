@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
@@ -56,6 +57,22 @@ export default function AnnouncePage() {
     catch { return {}; }
   });
   const [parasha, setParasha] = useState(getParasha());
+
+  // Load template from server
+  const { data: serverTemplate } = useQuery({
+    queryKey: ['announceTemplate', synagogue?._id],
+    queryFn: () => api.get('/settings/announce-template').then(r => r.data),
+    enabled: !!synagogue?._id,
+    onSuccess: (data) => {
+      if (data.template) setTemplate(data.template);
+    }
+  });
+
+  const saveTemplateMutation = useMutation({
+    mutationFn: (tmpl) => api.put('/settings/announce-template', { template: tmpl }),
+    onSuccess: () => toast.success('התבנית נשמרה בשרת ✓'),
+    onError: () => toast.error('שגיאה בשמירה'),
+  });
 
   // Save template
   useEffect(() => {
@@ -201,6 +218,7 @@ export default function AnnouncePage() {
               </div>
             ))}
             <button className={styles.addFieldBtn} onClick={addField}>+ הוסף שדה</button>
+            <button className={styles.saveServerBtn} onClick={() => saveTemplateMutation.mutate(template)}>☁️ שמור תבנית בענן</button>
             <button className={styles.resetBtn} onClick={() => { setTemplate(DEFAULT_TEMPLATE); toast.success('התבנית אופסה'); }}>🔄 איפוס תבנית</button>
           </>
         )}
