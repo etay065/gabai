@@ -42,7 +42,7 @@
     <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
   <script>
-    window.addEventListener('load', function() {
+    window.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
         var s = document.getElementById('splash');
         if (s) { s.classList.add('hide'); setTimeout(function(){ s.remove(); }, 400); }
