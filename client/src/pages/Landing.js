@@ -75,6 +75,7 @@ export default function Landing() {
         </div>
       </div>
       <button onClick={toggleLang} className={styles.langBtn}>{lang === 'he' ? 'EN' : 'עב'}</button>
+      <a href='/landing.html' className={styles.aboutLink}>עלינו</a>
       <div className={styles.footer}>{t('landing.footer')}</div>
     </div>
   );
