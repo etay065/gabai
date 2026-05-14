@@ -1,15 +1,9 @@
-const CACHE = 'gabai-v2';
+const CACHE = 'gabai-v3';
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(cache =>
-      cache.addAll([
-        '/',
-        '/index.html',
-        '/logo-transparent.png',
-        '/logo192.png',
-        '/apple-touch-icon.png',
-      ])
+      cache.addAll(['/', '/index.html', '/logo-transparent.png', '/logo192.png'])
     )
   );
   self.skipWaiting();
@@ -25,11 +19,14 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+  
+  // Never intercept landing.html - let it go to network
+  if (url.pathname === '/landing.html') return;
+
   if (e.request.mode === 'navigate') {
     e.respondWith(
-      caches.match('/index.html').then(cached => {
-        return cached || fetch(e.request);
-      })
+      caches.match('/index.html').then(cached => cached || fetch(e.request))
     );
     return;
   }
