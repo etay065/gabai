@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../i18n/LanguageContext';
@@ -6,6 +6,25 @@ import styles from './Landing.module.css';
 
 export default function Landing() {
   const { gabai } = useAuth();
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [showIOSHint, setShowIOSHint] = useState(false);
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+  useEffect(() => {
+    const handler = (e) => { e.preventDefault(); setInstallPrompt(e); };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (installPrompt) {
+      await installPrompt.prompt();
+      setInstallPrompt(null);
+    } else if (isIOS) {
+      setShowIOSHint(true);
+    }
+  };
   const { t, lang, toggleLang } = useLang();
   const navigate = useNavigate();
 
@@ -26,6 +45,17 @@ export default function Landing() {
         </div>
 
         <div className={styles.divider} />
+        {!isStandalone && (
+          <button className={styles.installBtn} onClick={handleInstall}>
+            📲 הוסף כאפליקציה למכשיר
+          </button>
+        )}
+        {showIOSHint && (
+          <div className={styles.iosHint}>
+            לחץ על <strong>⬆️</strong> ואז <strong>"Add to Home Screen"</strong>
+            <button className={styles.iosHintClose} onClick={() => setShowIOSHint(false)}>✕</button>
+          </div>
+        )}
 
         <div className={styles.cards}>
           <div className={styles.card} onClick={() => navigate('/member')} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('/member')}>

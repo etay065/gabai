@@ -153,3 +153,40 @@
   cursor: pointer; letter-spacing: 0.05em;
 }
 .langBtn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.installBtn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  background: rgba(232,181,42,0.15);
+  border: 1.5px solid rgba(232,181,42,0.4);
+  border-radius: var(--radius-lg);
+  color: #F5D87A;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.installBtn:hover { background: rgba(232,181,42,0.25); }
+
+.iosHint {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
+  line-height: 1.6;
+}
+.iosHintClose {
+  position: absolute;
+  top: 8px; left: 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  cursor: pointer;
+}
