@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gab-AI · מערכת ניהול חכמה לבית הכנסת</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D1B2E;
+  --navy2: #152540;
+  --navy3: #1E3A5F;
+  --gold: #E8B52A;
+  --gold2: #F5D87A;
+  --white: #ffffff;
+  --gray: rgba(255,255,255,0.6);
+  --gray2: rgba(255,255,255,0.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #0D1B2E 0%, #152540 60%, #1E3A5F 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 60px;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,181,42,0.07) 0%, transparent 70%);
+  top: -200px; right: -200px;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,90,160,0.15) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+}
+
+/* nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 16px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+  background: rgba(13,27,46,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo img { width: 36px; height: 36px; object-fit: contain; }
+.nav-logo span { font-size: 20px; font-weight: 800; color: var(--white); }
+.nav-logo .ai { color: var(--gold); }
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--gold);
+  color: var(--navy);
+  border: none; border-radius: 30px;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  font-family: 'Heebo', sans-serif;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+
+/* hero content */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(232,181,42,0.1);
+  border: 1px solid rgba(232,181,42,0.3);
+  border-radius: 30px;
+  padding: 6px 16px;
+  font-size: 13px; font-weight: 600;
+  color: var(--gold2);
+  margin-bottom: 32px;
+  animation: fadeDown 0.6s ease;
+}
+.hero-content { text-align: center; max-width: 700px; position: relative; z-index: 1; }
+.hero-title {
+  font-size: clamp(36px, 8vw, 72px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  animation: fadeUp 0.7s ease;
+}
+.hero-title .gold { 
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: clamp(16px, 3vw, 22px);
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease;
+}
+.hero-btns {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.9s ease;
+}
+.btn-primary {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--gold), #D4A018);
+  color: var(--navy);
+  border: none; border-radius: 30px;
+  font-size: 16px; font-weight: 800;
+  cursor: pointer; text-decoration: none;
+  font-family: 'Heebo', sans-serif;
+  transition: all 0.2s;
+  box-shadow: 0 8px 32px rgba(232,181,42,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,181,42,0.4); }
+.btn-secondary {
+  padding: 14px 32px;
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 30px;
+  font-size: 16px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  font-family: 'Heebo', sans-serif;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.15); }
+
+/* phone mockups */
+.hero-phones {
+  position: relative;
+  margin-top: 60px;
+  height: 420px;
+  width: 100%;
+  max-width: 700px;
+  animation: fadeUp 1s ease;
+}
+.phone {
+  position: absolute;
+  width: 200px;
+  background: #1a1a2e;
+  border-radius: 28px;
+  border: 2px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+.phone-screen {
+  width: 100%;
+  aspect-ratio: 9/18;
+  background: #f0f2f5;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.phone-center { top: 30px; left: 50%; transform: translateX(-50%); z-index: 3; }
+.phone-left { top: 60px; left: 5%; transform: rotate(-8deg); opacity: 0.7; z-index: 1; width: 170px; }
+.phone-right { top: 60px; right: 5%; transform: rotate(8deg); opacity: 0.7; z-index: 1; width: 170px; }
+
+/* mock screens */
+.mock-header {
+  background: linear-gradient(135deg, #0D1B2E, #1E3A5F);
+  padding: 12px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mock-header-txt { color: white; font-size: 10px; font-weight: 700; direction: rtl; }
+.mock-header-sub { color: rgba(255,255,255,0.5); font-size: 7px; direction: rtl; }
+.mock-body { flex: 1; padding: 8px; background: #f5f7fa; direction: rtl; }
+.mock-card {
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  border: 1px solid #e8eaf0;
+}
+.mock-card-title { font-size: 8px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; direction: rtl; }
+.mock-card-sub { font-size: 6px; color: #888; direction: rtl; }
+.mock-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 6px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.mock-badge-gold { background: #FFF8E0; color: #B8860B; }
+.mock-badge-green { background: #E8F5E9; color: #2E7D32; }
+.mock-badge-blue { background: #E3F2FD; color: #1565C0; }
+.mock-calendar-header {
+  background: linear-gradient(135deg, #0D1B2E, #1E3A5F);
+  padding: 8px;
+  text-align: center;
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  direction: rtl;
+}
+.mock-cal-grid {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  background: white; padding: 4px;
+}
+.mock-cal-cell {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5px; color: #333; border-radius: 3px;
+}
+.mock-cal-today { background: #0D1B2E; color: white !important; border-radius: 50%; }
+.mock-cal-shabbat { color: #3949AB; font-weight: 700; }
+.mock-stat { text-align: center; padding: 4px; }
+.mock-stat-num { font-size: 14px; font-weight: 800; color: #0D1B2E; }
+.mock-stat-lbl { font-size: 5px; color: #888; }
+.mock-stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 6px; background: white; margin: 4px; border-radius: 6px; border: 1px solid #eee; }
+
+/* ── FEATURES ── */
+.section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+.section-label {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 18px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+.feature-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 32px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,181,42,0.4), transparent);
+}
+.feature-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(232,181,42,0.2);
+  transform: translateY(-4px);
+}
+.feature-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: rgba(232,181,42,0.1);
+  border: 1px solid rgba(232,181,42,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.feature-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.feature-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
+  padding: 100px 24px;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  max-width: 900px;
+  margin: 60px auto 0;
+}
+.step {
+  text-align: center;
+  position: relative;
+}
+.step::after {
+  content: '←';
+  position: absolute;
+  top: 24px;
+  left: -20px;
+  color: rgba(232,181,42,0.3);
+  font-size: 24px;
+}
+.step:last-child::after { display: none; }
+.step-num {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #D4A018);
+  color: var(--navy);
+  font-size: 20px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(232,181,42,0.3);
+}
+.step-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.step-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+/* ── WHO FOR ── */
+.audiences {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 60px;
+}
+.audience-card {
+  border-radius: 24px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.audience-gabai { background: linear-gradient(135deg, #0D1B2E, #1E3A5F); border: 1px solid rgba(232,181,42,0.2); }
+.audience-member { background: linear-gradient(135deg, #1a1a2e, #2d2d4e); border: 1px solid rgba(255,255,255,0.1); }
+.audience-emoji { font-size: 48px; margin-bottom: 20px; display: block; }
+.audience-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+.audience-list { list-style: none; padding: 0; }
+.audience-list li {
+  padding: 8px 0;
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; gap: 10px;
+}
+.audience-list li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+/* ── CTA ── */
+.cta-section {
+  text-align: center;
+  padding: 100px 24px;
+  background: linear-gradient(135deg, #0D1B2E, #1a2a4a);
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,181,42,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.cta-title { font-size: clamp(32px, 6vw, 56px); font-weight: 900; margin-bottom: 20px; position: relative; }
+.cta-sub { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; position: relative; }
+.cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+/* footer */
+footer {
+  padding: 32px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.3);
+  font-size: 13px;
+}
+
+/* animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 600px) {
+  .audiences { grid-template-columns: 1fr; }
+  .phone-left, .phone-right { display: none; }
+  .hero-phones { height: 380px; }
+  .step::after { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <span>Gab<span class="ai">-AI</span></span>
+  </a>
+  <a href="https://gabai-1-4b6f.onrender.com" class="nav-cta" target="_blank">כניסה לאפליקציה</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✨ ניהול בית הכנסת נהיה חכם יותר</div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      הגבאי החדש<br>של בית הכנסת<br>הוא <span class="gold">דיגיטלי</span>
+    </h1>
+    <p class="hero-sub">
+      Gab-AI מאפשרת לגבאי לנהל בקשות תפילה, לוח זמנים, מתפללים והתמחרויות —
+      הכל במקום אחד, ממכשיר כלשהו
+    </p>
+    <div class="hero-btns">
+      <a href="https://gabai-1-4b6f.onrender.com" class="btn-primary" target="_blank">התחל בחינם →</a>
+      <a href="#features" class="btn-secondary">גלה את היכולות</a>
+    </div>
+  </div>
+
+  <!-- Phone mockups -->
+  <div class="hero-phones">
+    <!-- Left phone - member -->
+    <div class="phone phone-left">
+      <div class="phone-screen">
+        <div class="mock-header">
+          <div><div class="mock-header-txt">Gab-AI</div><div class="mock-header-sub">שלום, ישראל</div></div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-card">
+            <div class="mock-card-title">בקשה חדשה</div>
+            <div class="mock-card-sub">שבת · כי תבוא</div>
+            <span class="mock-badge mock-badge-blue">קריאת תורה — כהן</span>
+          </div>
+          <div class="mock-card">
+            <div class="mock-card-title">בקשה קודמת</div>
+            <span class="mock-badge mock-badge-green">אושר ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center phone - gabai calendar -->
+    <div class="phone phone-center">
+      <div class="phone-screen">
+        <div class="mock-calendar-header">מאי 2026 · אייר תשפ"ו</div>
+        <div class="mock-cal-grid">
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">א</div>
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">ב</div>
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">ג</div>
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">ד</div>
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">ה</div>
+          <div class="mock-cal-cell" style="color:#3949AB;font-weight:700">ו</div>
+          <div class="mock-cal-cell mock-cal-shabbat">ש</div>
+          <div class="mock-cal-cell">26</div><div class="mock-cal-cell">27</div><div class="mock-cal-cell">28</div><div class="mock-cal-cell">29</div><div class="mock-cal-cell">30</div><div class="mock-cal-cell">1</div><div class="mock-cal-cell mock-cal-shabbat" style="font-size:4px">2<br>אמור</div>
+          <div class="mock-cal-cell">3</div><div class="mock-cal-cell">4</div><div class="mock-cal-cell">5</div><div class="mock-cal-cell">6</div><div class="mock-cal-cell mock-cal-today">7</div><div class="mock-cal-cell">8</div><div class="mock-cal-cell mock-cal-shabbat" style="font-size:4px">9<br>בהר</div>
+          <div class="mock-cal-cell">10</div><div class="mock-cal-cell">11</div><div class="mock-cal-cell">12</div><div class="mock-cal-cell">13</div><div class="mock-cal-cell">14</div><div class="mock-cal-cell">15</div><div class="mock-cal-cell mock-cal-shabbat" style="font-size:4px">16<br>במדבר</div>
+          <div class="mock-cal-cell">17</div><div class="mock-cal-cell">18</div><div class="mock-cal-cell" style="background:#FFF8E0;font-size:4px">19<br>שבועות</div><div class="mock-cal-cell" style="background:#FFF8E0;font-size:4px">20<br>שבועות</div><div class="mock-cal-cell">21</div><div class="mock-cal-cell">22</div><div class="mock-cal-cell mock-cal-shabbat" style="font-size:4px">23<br>נשא</div>
+        </div>
+        <div class="mock-stats-row">
+          <div class="mock-stat"><div class="mock-stat-num">4</div><div class="mock-stat-lbl">ממתינות</div></div>
+          <div class="mock-stat"><div class="mock-stat-num" style="color:#2E7D32">12</div><div class="mock-stat-lbl">אושרו</div></div>
+          <div class="mock-stat"><div class="mock-stat-num" style="color:#666">16</div><div class="mock-stat-lbl">סה"כ</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right phone - auction -->
+    <div class="phone phone-right">
+      <div class="phone-screen">
+        <div class="mock-header">
+          <div><div class="mock-header-txt">התמחרויות</div></div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-card">
+            <div class="mock-card-title">עלייה ראשונה — כהן</div>
+            <div class="mock-card-sub" style="color:#2E7D32;font-weight:700">₪ 350</div>
+            <div style="font-size:6px;color:#888;margin-top:2px">⏱ 02:14:33</div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-card-title">שליח ציבור מוסף</div>
+            <div class="mock-card-sub" style="color:#2E7D32;font-weight:700">₪ 180</div>
+            <span class="mock-badge mock-badge-gold">פעיל</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background: linear-gradient(180deg, #1E3A5F 0%, #0D1B2E 100%); padding: 100px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal">
+      <span class="section-label">יכולות המערכת</span>
+      <h2 class="section-title">כל מה שגבאי צריך<br>במקום אחד</h2>
+      <p class="section-sub">מהגשת בקשה ועד לניהול מלא של בית הכנסת — הכל דיגיטלי, הכל בזמן אמת</p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">ניהול בקשות תפילה</div>
+        <div class="feature-desc">מתפללים מגישים בקשות לתפילה, קריאת תורה ודרשות. הגבאי מאשר, דוחה או מוסיף ידנית — הכל עם תאריך ולוח שנה עברי מדויק.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">לוח שנה עברי</div>
+        <div class="feature-desc">לוח שנה עברי מדויק עם פרשות השבוע, חגים ומועדים. ניווט קדימה עד 3 שנים. מותאם לישראל ולחו"ל.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">רשימת מתפללים</div>
+        <div class="feature-desc">ניהול מלא של חברי הקהילה: כהן/לוי/ישראל, שם האב, שם משתמש לכניסה, מעקב יתרות והתמחרויות.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏷️</div>
+        <div class="feature-title">התמחרויות בזמן אמת</div>
+        <div class="feature-desc">פתח התמחרות לעליות לתורה, שליח ציבור וכל פריט אחר. קוצב זמן חי, הצעות מחיר, זוכה אוטומטי.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📢</div>
+        <div class="feature-title">לוח זמנים שבועי</div>
+        <div class="feature-desc">צור הודעת שבת מוכנה לשיתוף בוואטסאפ. תבנית קבועה שמתמלאת בקלות כל שבוע — שמורה בענן.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">PWA — כמו אפליקציה אמיתית</div>
+        <div class="feature-desc">הוסף למסך הבית של הנייד. עובד כמו אפליקציה — ללא App Store, ללא תשלום, תמיד עדכני.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div style="max-width:900px;margin:0 auto;text-align:center;" class="reveal">
+    <span class="section-label">איך זה עובד</span>
+    <h2 class="section-title">פשוט, מהיר, ללא סיבוכים</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <div class="step-title">הגבאי נרשם</div>
+      <div class="step-desc">יוצר חשבון לבית הכנסת ומגדיר את פרטיו</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <div class="step-title">מוסיף מתפללים</div>
+      <div class="step-desc">מוסיף את חברי הקהילה עם שם משתמש לכניסה</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <div class="step-title">המתפלל נכנס</div>
+      <div class="step-desc">עם שם המשתמש שלו, בוחר בית כנסת ומגיש בקשות</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <div class="step-title">הגבאי מאשר</div>
+      <div class="step-desc">רואה הכל בלוח, מאשר בלחיצה, ומשתף לוח זמנים לשבת</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO FOR -->
+<section style="padding: 100px 24px; background: var(--navy);">
+  <div style="max-width:1000px;margin:0 auto;" class="reveal">
+    <span class="section-label">למי מיועד</span>
+    <h2 class="section-title">לגבאי ולמתפלל</h2>
+    <div class="audiences">
+      <div class="audience-card audience-gabai">
+        <span class="audience-emoji">👨‍💼</span>
+        <div class="audience-title">לגבאי</div>
+        <ul class="audience-list">
+          <li>ניהול כל הבקשות במקום אחד</li>
+          <li>לוח שנה עברי עם פרשות</li>
+          <li>הוספה ידנית של בקשות</li>
+          <li>ניהול רשימת מתפללים</li>
+          <li>ניהול התמחרויות ויתרות</li>
+          <li>שיתוף לוח זמנים שבועי</li>
+        </ul>
+      </div>
+      <div class="audience-card audience-member">
+        <span class="audience-emoji">🙏</span>
+        <div class="audience-title">למתפלל</div>
+        <ul class="audience-list">
+          <li>כניסה עם שם משתמש בלבד</li>
+          <li>הגשת בקשה לתפילה / עלייה</li>
+          <li>מעקב אחר סטטוס הבקשה</li>
+          <li>השתתפות בהתמחרויות</li>
+          <li>צפייה ביתרה האישית</li>
+          <li>ממכשיר כלשהו</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <h2 class="cta-title">מוכן לנסות?<br><span style="color:var(--gold)">זה חינמי לגמרי</span></h2>
+  <p class="cta-sub">ללא הורדה, ללא כרטיס אשראי, ללא התחייבות</p>
+  <div class="cta-btns">
+    <a href="https://gabai-1-4b6f.onrender.com/gabai/register" class="btn-primary" target="_blank">צור חשבון גבאי חינמי →</a>
+    <a href="https://gabai-1-4b6f.onrender.com" class="btn-secondary" target="_blank">כניסה לאפליקציה</a>
+  </div>
+</section>
+
+<footer>
+  <p>Gab-AI © 2026 · ניהול חכם לבית הכנסת</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
