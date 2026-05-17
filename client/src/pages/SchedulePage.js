@@ -64,12 +64,14 @@ export default function SchedulePage() {
   const [shabbat, setShabbat] = useState(null);
   const [weekday, setWeekday] = useState(null);
 
+  const [loaded, setLoaded] = React.useState(false);
   React.useEffect(() => {
-    if (schedule) {
+    if (schedule && !loaded) {
       setShabbat(schedule.shabbat || []);
       setWeekday(schedule.weekday || []);
+      setLoaded(true);
     }
-  }, [schedule]);
+  }, [schedule, loaded]);
 
   const saveMutation = useMutation({
     mutationFn: () => api.put('/schedule', { shabbat, weekday }),
