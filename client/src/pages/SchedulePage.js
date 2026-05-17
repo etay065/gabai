@@ -63,7 +63,11 @@ export default function SchedulePage() {
 
   const [shabbat, setShabbat] = useState(null);
   const [weekday, setWeekday] = useState(null);
-  const [initialized, setInitialized] = useState(false);
+  const initRef = React.useRef(false);
+  const shabbatRef = React.useRef(shabbat);
+  const weekdayRef = React.useRef(weekday);
+  shabbatRef.current = shabbat;
+  weekdayRef.current = weekday;
 
   const initializedRef = React.useRef(false);
   React.useEffect(() => {
@@ -75,15 +79,15 @@ export default function SchedulePage() {
   }, [schedule]);
 
   const saveMutation = useMutation({
-    mutationFn: () => api.put('/schedule', { shabbat, weekday }),
+    mutationFn: () => api.put('/schedule', { shabbat: shabbatRef.current, weekday: weekdayRef.current }),
     onSuccess: () => { toast.success('לוח הזמנים נשמר ✓'); },
     onError: () => toast.error('שגיאה בשמירה'),
   });
 
-  if (schedule && !initialized) {
+  if (schedule && !initRef.current) {
+    initRef.current = true;
     setShabbat(schedule.shabbat || []);
     setWeekday(schedule.weekday || []);
-    setInitialized(true);
   }
 
   if (isLoading || shabbat === null) return <div className={styles.loading}>טוען...</div>;
