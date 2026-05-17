@@ -63,6 +63,7 @@ export default function SchedulePage() {
 
   const [shabbat, setShabbat] = useState(null);
   const [weekday, setWeekday] = useState(null);
+  const [initialized, setInitialized] = useState(false);
 
   const initializedRef = React.useRef(false);
   React.useEffect(() => {
@@ -78,6 +79,12 @@ export default function SchedulePage() {
     onSuccess: () => { toast.success('לוח הזמנים נשמר ✓'); },
     onError: () => toast.error('שגיאה בשמירה'),
   });
+
+  if (schedule && !initialized) {
+    setShabbat(schedule.shabbat || []);
+    setWeekday(schedule.weekday || []);
+    setInitialized(true);
+  }
 
   if (isLoading || shabbat === null) return <div className={styles.loading}>טוען...</div>;
 
