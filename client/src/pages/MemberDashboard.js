@@ -245,7 +245,7 @@ export default function MemberDashboard() {
               </div>
               <Badge variant={r.status}>{statusLabel(r.status)}</Badge>
             </div>
-            <Badge variant={r.type === 'תפילה' ? 'tefila' : r.type === 'קריאת תורה' ? 'torah' : 'darshan'}>{r.type} - {r.sub}</Badge>
+            <Badge variant={r.type === 'תפילה' ? 'tefila' : r.type === 'קריאת תורה' ? 'torah' : r.type === 'תרגום' ? 'targum' : 'darshan'}>{r.type} - {r.sub}</Badge>
             {r.reason && <p className={styles.reason}>{r.reason}</p>}
           </Card>
         ))}
@@ -269,11 +269,11 @@ export default function MemberDashboard() {
                 <div style={{ marginBottom: '1rem' }}>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--clr-text2)', marginBottom: 6 }}>סוג בקשה</label>
                   <div className={styles.typeGrid}>
-                    {['תפילה', 'קריאת תורה', 'דרשן'].map(t => (
+                    {['תפילה', 'קריאת תורה', 'דרשן', 'תרגום'].map(t => (
                       <button key={t} type="button"
                         className={styles.typeOpt + ' ' + (form.type === t ? styles.typeOptSel : '')}
-                        onClick={() => setForm(f => ({ ...f, type: t, sub: t === 'תפילה' ? 'שחרית' : t === 'קריאת תורה' ? 'כהן ראשון' : 'דרשה' }))}>
-                        <span className={styles.typeOptIcon}>{t === 'תפילה' ? '🕯️' : t === 'קריאת תורה' ? '📖' : '🎤'}</span>{t}
+                        onClick={() => setForm(f => ({ ...f, type: t, sub: t === 'תפילה' ? 'שחרית' : t === 'קריאת תורה' ? 'כהן ראשון' : t === 'דרשן' ? 'דרשה' : 'תרגום ראשון' }))}>
+                        <span className={styles.typeOptIcon}>{t === 'תפילה' ? '🕯️' : t === 'קריאת תורה' ? '📖' : t === 'דרשן' ? '🎤' : '📜'}</span>{t}
                       </button>
                     ))}
                   </div>
@@ -286,9 +286,13 @@ export default function MemberDashboard() {
                   <Select label="עלייה לתורה" value={form.sub} onChange={e => setForm(f => ({ ...f, sub: e.target.value }))}>
                     {['כהן ראשון', 'לוי שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שביעי', 'מפטיר'].map(a => <option key={a}>{a}</option>)}
                   </Select>
-                ) : (
+                ) : form.type === 'דרשן' ? (
                   <Select label="סוג הדרשה" value={form.sub} onChange={e => setForm(f => ({ ...f, sub: e.target.value }))}>
                     {['דרשה', 'שיעור תורה', 'הספד', 'דברי תורה קצרים'].map(d => <option key={d}>{d}</option>)}
+                  </Select>
+                ) : (
+                  <Select label="תרגום" value={form.sub} onChange={e => setForm(f => ({ ...f, sub: e.target.value }))}>
+                    {['תרגום ראשון', 'תרגום שני', 'תרגום שלישי', 'תרגום רביעי', 'תרגום חמישי', 'תרגום שישי', 'תרגום שביעי', 'תרגום מפטיר'].map(d => <option key={d}>{d}</option>)}
                   </Select>
                 )}
                 <Textarea label="סיבה (אופציונלי)" value={form.reason} onChange={e => setForm(f => ({ ...f, reason: e.target.value }))} placeholder="יאהרצייט, בר מצווה, שמחה..." rows={2} />

@@ -154,3 +154,4 @@ textarea.fieldInput { resize: vertical; line-height: 1.6; }
 .loader { text-align: center; padding: 3rem 1rem; color: var(--clr-text2); font-size: 14px; }
 .empty  { text-align: center; padding: 3rem 1rem; color: var(--clr-text3); font-size: 14px; }
 .badge_darshan { background: #EDE9FF; color: #5B3FCC; }
+.badge_targum { background: #FFF0E6; color: #B85C00; }

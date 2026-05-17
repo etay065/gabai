@@ -473,10 +473,10 @@ export default function GabaiDashboard() {
             <div className={styles.fieldGroup}>
               <label className={styles.fieldLabel}>סוג בקשה</label>
               <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginTop:6}}>
-                {[['תפילה','🕯️'],['קריאת תורה','📖'],['דרשן','🎤']].map(([t,icon]) => (
+                {[['תפילה','🕯️'],['קריאת תורה','📖'],['דרשן','🎤'],['תרגום','📜']].map(([t,icon]) => (
                   <button key={t} type="button"
                     style={{padding:'8px 4px',border: manualForm.type===t ? '2px solid var(--navy-600)' : '1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',background: manualForm.type===t ? 'var(--navy-50)' : 'var(--clr-bg)',fontSize:12,fontWeight:600,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:4}}
-                    onClick={() => setManualForm(f => ({ ...f, type: t, sub: t==='תפילה'?'שחרית':t==='קריאת תורה'?'כהן ראשון':'דרשה' }))}>
+                    onClick={() => setManualForm(f => ({ ...f, type: t, sub: t==='תפילה'?'שחרית':t==='קריאת תורה'?'כהן ראשון':t==='דרשן'?'דרשה':'תרגום ראשון' }))}>
                     <span>{icon}</span>{t}
                   </button>
                 ))}
@@ -488,6 +488,7 @@ export default function GabaiDashboard() {
                 {manualForm.type === 'תפילה' && ['שחרית','מוסף','מנחה','קבלת שבת','מעריב'].map(p => <option key={p}>{p}</option>)}
                 {manualForm.type === 'קריאת תורה' && ['כהן ראשון','לוי שני','שלישי','רביעי','חמישי','שישי','שביעי','מפטיר'].map(a => <option key={a}>{a}</option>)}
                 {manualForm.type === 'דרשן' && ['דרשה','שיעור תורה','הספד','דברי תורה קצרים'].map(d => <option key={d}>{d}</option>)}
+                {manualForm.type === 'תרגום' && ['תרגום ראשון','תרגום שני','תרגום שלישי','תרגום רביעי','תרגום חמישי','תרגום שישי','תרגום שביעי','תרגום מפטיר'].map(d => <option key={d}>{d}</option>)}
               </select>
             </div>
             <div className={styles.fieldGroup}>
