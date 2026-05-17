@@ -73,7 +73,7 @@ export default function SchedulePage() {
 
   const saveMutation = useMutation({
     mutationFn: () => api.put('/schedule', { shabbat, weekday }),
-    onSuccess: () => { qc.invalidateQueries(['schedule']); toast.success('לוח הזמנים נשמר ✓'); },
+    onSuccess: (data) => { qc.invalidateQueries(['schedule']); setShabbat(data.shabbat || []); setWeekday(data.weekday || []); toast.success('לוח הזמנים נשמר ✓'); },
     onError: () => toast.error('שגיאה בשמירה'),
   });
 

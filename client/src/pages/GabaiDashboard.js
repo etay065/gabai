@@ -422,15 +422,23 @@ export default function GabaiDashboard() {
 
                 {daySchedule.length === 0 && <EmptyState text="אין לוח זמנים מוגדר ליום זה" />}
 
-                {daySchedule.map((p, i) => {
-                  const reqs = approvedForSchedDate.filter(r => r.sub === p.name);
+                {daySchedule.map((slot, i) => {
+                  const reqs = approvedForSchedDate.filter(r => r.type === slot.type && r.sub === slot.sub);
+                  const taken = reqs.length > 0;
                   return (
-                    <div key={i} className={`${styles.schedBlock} ${reqs.length ? styles.schedBlockHighlight : ''}`}>
-                      <div className={styles.schedTime}>{p.time}</div>
-                      <div className={styles.schedName}>{p.name}</div>
-                      {p.details && <div className={styles.schedDetails}>{p.details}</div>}
-                      {reqs.length > 0 && (
-                        <div className={styles.schedTags}>
+                    <div key={i} className={styles.schedBlock} style={{borderRight:`3px solid ${taken?'#E74C3C':'#27AE60'}`}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                        <div>
+                          {slot.time && <div className={styles.schedTime}>{slot.time}</div>}
+                          <div className={styles.schedName}>{slot.type} — {slot.sub}</div>
+                          {slot.label && <div className={styles.schedDetails}>{slot.label}</div>}
+                        </div>
+                        <div style={{fontSize:12,fontWeight:700,color:taken?'#E74C3C':'#27AE60',whiteSpace:'nowrap'}}>
+                          {taken ? '🔴 תפוס' : '🟢 פנוי'}
+                        </div>
+                      </div>
+                      {taken && (
+                        <div className={styles.schedTags} style={{marginTop:6}}>
                           {reqs.map(r => <span key={r._id} className={styles.schedTag}>{r.memberName}</span>)}
                         </div>
                       )}
