@@ -79,7 +79,7 @@ const HOLIDAYS = {
   '2026-04-08':'פסח','2026-04-09':'פסח',
   '2026-04-12':'יום השואה','2026-04-20':'יום הזיכרון','2026-04-21':'יום העצמאות',
   '2026-05-01':'פסח שני','2026-05-11':'ל"ג בעומר',
-  '2026-05-19':'שבועות','2026-05-20':'שבועות',
+  '2026-05-22':'שבועות','2026-05-23':'שבועות',
   '2026-07-02':'י"ז בתמוז','2026-07-23':'תשעה באב',
   // 5787
   '2026-09-11':'ראש השנה','2026-09-12':'ראש השנה','2026-09-13':'צום גדליה',
@@ -142,12 +142,12 @@ function MiniCalendar({selectedDate, onSelectDate, markedDates={}}){
   return(
     <div style={{border:'1px solid var(--clr-border)',borderRadius:'var(--radius-lg)',overflow:'hidden',marginBottom:'1rem',direction:'rtl'}}>
       <div style={{background:'var(--navy-800)',padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <button onClick={goFwd} disabled={!canFwd} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>›</button>
+        <button onClick={goBack} disabled={!canBack} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>›</button>
         <div style={{textAlign:'center'}}>
           <div style={{fontSize:13,fontWeight:700,color:'#fff'}}>{GREG_MONTHS_HE[vm]} {vy}</div>
           <div style={{fontSize:10,color:'var(--navy-300)'}}>{hebMonthStr} {mh.year}</div>
         </div>
-        <button onClick={goBack} disabled={!canBack} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>‹</button>
+        <button onClick={goFwd} disabled={!canFwd} style={{width:28,height:28,borderRadius:'50%',border:'1px solid rgba(255,255,255,0.2)',background:'transparent',color:'#fff',fontSize:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>‹</button>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',borderRight:'1px solid var(--clr-border)',borderTop:'1px solid var(--clr-border)'}}>
         {DAYS_HEADER.map(d=>(
