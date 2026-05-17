@@ -32,7 +32,7 @@ function SlotEditor({ slots, onChange, title }) {
       {slots.map(slot => (
         <div key={slot.id} className={styles.slot}>
           <div className={styles.slotRow}>
-            <input className={styles.timeInput} type="time" value={slot.time} onChange={e => updateSlot(slot.id, 'time', e.target.value)} placeholder="שעה" />
+            <input className={styles.timeInput} type="text" value={slot.time} onChange={e => updateSlot(slot.id, 'time', e.target.value)} placeholder="08:30" maxLength={5} />
             <select className={styles.typeSelect} value={slot.type} onChange={e => updateSlot(slot.id, 'type', e.target.value)}>
               {TYPES.map(t => <option key={t}>{t}</option>)}
             </select>
