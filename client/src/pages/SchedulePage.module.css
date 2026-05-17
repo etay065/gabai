@@ -1,0 +1,32 @@
+.page { min-height: 100vh; background: var(--clr-bg); display: flex; flex-direction: column; direction: rtl; }
+.loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: var(--clr-text2); font-size: 14px; }
+
+.topBar { display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; height: 52px; background: var(--navy-900); position: sticky; top: 0; z-index: 10; }
+.topBarTitle { font-size: 15px; font-weight: 700; color: #fff; }
+.backBtn { padding: 6px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-md); font-size: 13px; color: rgba(255,255,255,0.8); background: transparent; cursor: pointer; }
+.backBtn:hover { background: rgba(255,255,255,0.1); }
+.saveBtn { padding: 6px 16px; background: var(--gold-400); color: var(--navy-900); border: none; border-radius: var(--radius-md); font-size: 13px; font-weight: 700; cursor: pointer; }
+.saveBtn:disabled { opacity: 0.6; }
+
+.tabs { display: flex; border-bottom: 1px solid var(--clr-border); background: var(--clr-bg); position: sticky; top: 52px; z-index: 9; }
+.tab { flex: 1; padding: 12px 4px; font-size: 14px; font-weight: 500; color: var(--clr-text2); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; }
+.tabActive { color: var(--navy-700); border-bottom-color: var(--navy-600); font-weight: 700; }
+
+.body { padding: 1.25rem; max-width: 680px; margin: 0 auto; width: 100%; }
+.hint { font-size: 13px; color: var(--clr-text2); margin-bottom: 1.25rem; line-height: 1.5; background: var(--navy-50); border: 1px solid var(--navy-200); border-radius: var(--radius-md); padding: 10px 14px; }
+
+.slotSection { }
+.slotHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.slotTitle { font-size: 15px; font-weight: 700; color: var(--clr-text); }
+.addSlotBtn { padding: 6px 14px; background: var(--navy-700); color: #fff; border: none; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; }
+.addSlotBtn:hover { background: var(--navy-800); }
+
+.slot { background: var(--clr-bg); border: 1px solid var(--clr-border); border-radius: var(--radius-lg); padding: 12px; margin-bottom: 10px; }
+.slotRow { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.timeInput { width: 90px; padding: 7px 8px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 13px; background: var(--clr-bg); color: var(--clr-text); direction: ltr; font-family: inherit; flex-shrink: 0; }
+.typeSelect, .subSelect { flex: 1; padding: 7px 8px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 13px; background: var(--clr-bg); color: var(--clr-text); direction: rtl; font-family: inherit; }
+.removeBtn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--clr-border); background: var(--clr-bg); color: var(--clr-text2); font-size: 13px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.removeBtn:hover { background: #FAE0E0; color: #C0392B; }
+.labelInput { width: 100%; padding: 7px 10px; border: 1.5px solid var(--clr-border2); border-radius: var(--radius-md); font-size: 13px; background: var(--clr-bg2); color: var(--clr-text); font-family: inherit; direction: rtl; }
+
+.empty { text-align: center; padding: 2rem; color: var(--clr-text3); font-size: 14px; border: 1.5px dashed var(--clr-border2); border-radius: var(--radius-lg); }

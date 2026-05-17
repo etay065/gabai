@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { HDate, HebrewCalendar, months, Sedra, ParshaEvent, greg } from '@hebcal/core';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -186,6 +186,8 @@ export default function MemberDashboard() {
   const [showCal, setShowCal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [form, setForm] = useState({ type: 'תפילה', sub: 'שחרית', reason: '' });
+  const [availability, setAvailability] = useState([]);
+  const [loadingAvail, setLoadingAvail] = useState(false);
   const { t, lang, toggleLang } = useLang();
   const synagogue = memberSynagogue || JSON.parse(sessionStorage.getItem('member_synagogue') || 'null');
   const name = memberName || sessionStorage.getItem('member_name') || '';
@@ -201,6 +203,15 @@ export default function MemberDashboard() {
     onSuccess: () => { qc.invalidateQueries(['myRequests']); setShowCal(false); setSelectedDate(null); setForm({ type: 'תפילה', sub: 'שחרית', reason: '' }); toast.success('הבקשה נשלחה לגבאי'); },
     onError: err => toast.error(err.response?.data?.message || 'שגיאה בשליחה'),
   });
+  useEffect(() => {
+    if (!selectedDate || !synagogue?._id) { setAvailability([]); return; }
+    setLoadingAvail(true);
+    api.get('/schedule/availability', { params: { synagogueId: synagogue._id, date: toKey(selectedDate) } })
+      .then(r => setAvailability(r.data.slots || []))
+      .catch(() => setAvailability([]))
+      .finally(() => setLoadingAvail(false));
+  }, [selectedDate, synagogue?._id]);
+
   if (!name || !synagogue) { navigate('/member'); return null; }
   const handleSubmit = e => {
     e.preventDefault();
@@ -262,6 +273,25 @@ export default function MemberDashboard() {
                 <div className={styles.selectedDate}>📅 {selectedDate.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
                 {selectedDate && getParasha(selectedDate) && <div className={styles.selectedExtra}>פרשת {getParasha(selectedDate)}</div>}
                 {selKey && HOLIDAYS[selKey] && <div className={styles.selectedExtra}>🎉 {HOLIDAYS[selKey]}</div>}
+              </div>
+            )}
+            {selectedDate && availability.length > 0 && (
+              <div style={{marginBottom:'1rem'}}>
+                <div style={{fontSize:12,fontWeight:700,color:'var(--clr-text2)',marginBottom:8}}>זמינות לתאריך זה:</div>
+                <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                  {availability.map((slot,i) => (
+                    <div key={i} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 12px',borderRadius:'var(--radius-md)',background:slot.taken?'#FFF0F0':'#F0FFF4',border:`1px solid ${slot.taken?'#FAC0C0':'#B8E6C8'}`}}>
+                      <div style={{fontSize:13,fontWeight:600,color:slot.taken?'#C0392B':'#27AE60'}}>
+                        {slot.time && <span style={{marginLeft:8,fontSize:11,opacity:0.7}}>{slot.time}</span>}
+                        {slot.sub}
+                        {slot.label && <span style={{fontSize:11,color:'var(--clr-text2)',marginRight:6}}> · {slot.label}</span>}
+                      </div>
+                      <div style={{fontSize:12,fontWeight:700,color:slot.taken?'#C0392B':'#27AE60'}}>
+                        {slot.taken ? `תפוס${slot.takenBy?' — '+slot.takenBy:''}` : '✓ פנוי'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
             {selectedDate && (
