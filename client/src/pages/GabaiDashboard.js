@@ -270,7 +270,13 @@ export default function GabaiDashboard() {
 
   // לוח זמנים — לפי תאריך נבחר
   const schedDay = schedDate ? schedDate.getDay() : null;
-  const daySchedule = schedDay !== null ? (scheduleAll.find(s => s.day === schedDay)?.prayers || []) : [];
+  const isSchedShabbat = schedDay === 6;
+  const { data: synagogueSchedule } = useQuery({
+    queryKey: ['schedule', synagogue?._id],
+    queryFn: () => api.get('/schedule', { params: { synagogueId: synagogue?._id } }).then(r => r.data),
+    enabled: !!synagogue?._id,
+  });
+  const daySchedule = schedDate ? (isSchedShabbat ? (synagogueSchedule?.shabbat || []) : (synagogueSchedule?.weekday || [])) : [];
   const approvedForSchedDate = schedDate
     ? allRequests.filter(r => r.requestDate === toKey(schedDate) && r.status === 'approved')
     : [];
