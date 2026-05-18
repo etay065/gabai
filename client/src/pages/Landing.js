@@ -37,7 +37,19 @@ export default function Landing() {
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <div className={styles.logoMark}>
-            <img src="/logo.svg" alt="Gab-AI" className={styles.logoSvg} />
+            <svg width="280" height="110" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#F5D87A"/><stop offset="100%" stopColor="#E8B52A"/>
+                </linearGradient>
+              </defs>
+              <text x="74" y="62" textAnchor="end" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="#ffffff" letterSpacing="-2">GAB</text>
+              <g transform="translate(100,32)">
+                <polygon points="0,-18 15.5,9 -15.5,9" fill="none" stroke="url(#gld)" strokeWidth="2.6" strokeLinejoin="round"/>
+                <polygon points="0,18 15.5,-9 -15.5,-9" fill="none" stroke="url(#gld)" strokeWidth="2.6" strokeLinejoin="round"/>
+              </g>
+              <text x="126" y="62" textAnchor="start" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="url(#gld)" letterSpacing="-2">AI</text>
+            </svg>
           </div>
           <div className={styles.logoTextWrap}>
             <div className={styles.logoTagline}>מערכת ניהול בית כנסת</div>

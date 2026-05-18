@@ -327,7 +327,12 @@ export default function GabaiDashboard() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <img src="/logo.svg" alt="logo" style={{width:44,height:44,objectFit:"contain",marginLeft:6}} />
+        <svg width="90" height="36" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0,marginLeft:6}}>
+          <defs><linearGradient id="hgld" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#F5D87A"/><stop offset="100%" stopColor="#E8B52A"/></linearGradient></defs>
+          <text x="74" y="62" textAnchor="end" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="#ffffff" letterSpacing="-2">GAB</text>
+          <g transform="translate(100,32)"><polygon points="0,-18 15.5,9 -15.5,9" fill="none" stroke="url(#hgld)" strokeWidth="2.6" strokeLinejoin="round"/><polygon points="0,18 15.5,-9 -15.5,-9" fill="none" stroke="url(#hgld)" strokeWidth="2.6" strokeLinejoin="round"/></g>
+          <text x="126" y="62" textAnchor="start" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="url(#hgld)" letterSpacing="-2">AI</text>
+        </svg>
         <div className={styles.headerInfo}>
           <div className={styles.headerTitle}>Gab-AI · לוח הגבאי</div>
           <div className={styles.headerSub}>{synagogue?.name}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}</div>

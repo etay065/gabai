@@ -1,25 +1,14 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
 <defs>
-  <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+  <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="0%">
     <stop offset="0%" stop-color="#F5D87A"/>
     <stop offset="100%" stop-color="#E8B52A"/>
   </linearGradient>
 </defs>
-<!-- Glow -->
-<circle cx="100" cy="95" r="70" fill="rgba(232,181,42,0.07)"/>
-<!-- Dome -->
-<path d="M60,117 Q60,52 100,42 Q140,52 140,117 Z" fill="url(#g)" opacity="0.95"/>
-<!-- Building body -->
-<rect x="66" y="115" width="68" height="32" fill="#152040" rx="2"/>
-<!-- Door -->
-<path d="M91,147 L91,127 Q100,119 109,127 L109,147 Z" fill="url(#g)" opacity="0.9"/>
-<!-- Windows -->
-<circle cx="80" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
-<circle cx="120" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
-<!-- Magen David above dome on dark circle -->
-<g transform="translate(100,38)">
-  <circle cx="0" cy="0" r="16" fill="#0D1526"/>
-  <polygon points="0,-12 10.5,6 -10.5,6" fill="none" stroke="#E8B52A" stroke-width="2.2" stroke-linejoin="round"/>
-  <polygon points="0,12 10.5,-6 -10.5,-6" fill="none" stroke="#E8B52A" stroke-width="2.2" stroke-linejoin="round"/>
+<text x="74" y="62" text-anchor="end" font-family="Heebo,sans-serif" font-size="68" font-weight="800" fill="#ffffff" letter-spacing="-2">GAB</text>
+<g transform="translate(100, 32)">
+  <polygon points="0,-18 15.5,9 -15.5,9" fill="none" stroke="url(#gld)" stroke-width="2.6" stroke-linejoin="round"/>
+  <polygon points="0,18 15.5,-9 -15.5,-9" fill="none" stroke="url(#gld)" stroke-width="2.6" stroke-linejoin="round"/>
 </g>
+<text x="126" y="62" text-anchor="start" font-family="Heebo,sans-serif" font-size="68" font-weight="800" fill="url(#gld)" letter-spacing="-2">AI</text>
 </svg>
