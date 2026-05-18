@@ -30,7 +30,7 @@
 }
 
 .headerInfo { flex: 1; min-width: 0; }
-.headerTitle { font-size: 13px; font-weight: 700; color: #ffffff; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.headerTitle { font-size: 15px; font-weight: 700; color: #ffffff; line-height: 1.2; }
 .headerSub   { font-size: 11px; color: var(--navy-300); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .logoutBtn {
@@ -282,12 +282,3 @@
   display: flex; align-items: center; justify-content: center;
 }
 .iconBtn:hover { background: rgba(255,255,255,0.1); }
-
-@media (max-width: 480px) {
-  .header { padding: 0 0.75rem; gap: 8px; height: 52px; }
-  .headerTitle { font-size: 12px; }
-  .headerSub { font-size: 10px; }
-  .headerBtns { gap: 2px; }
-  .headerBtns .logoutBtn { display: none; }
-  .headerBtns button:nth-child(n+4) { display: none; }
-}
