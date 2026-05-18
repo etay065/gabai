@@ -42,10 +42,7 @@
   margin-bottom: 1.5rem;
 }
 .logoMark {
-  background: rgba(13,21,38,0.6);
-  border-radius: 50%;
   position: relative;
-  width: 260px; height: 260px;
   display: flex; align-items: center; justify-content: center;
 }
 
