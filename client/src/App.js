@@ -11,6 +11,7 @@ import MembersPage from './pages/MembersPage';
 import AnnouncePage from './pages/AnnouncePage';
 import SchedulePage from './pages/SchedulePage';
 import { useAuth } from './context/AuthContext';
+import AccessibilityWidget from './components/AccessibilityWidget';
 
 function ProtectedGabai({ children }) {
   const { gabai } = useAuth();
@@ -19,7 +20,10 @@ function ProtectedGabai({ children }) {
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <main id="main-content" />
+      <AccessibilityWidget />
+      <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/gabai/login" element={<GabaiLogin />} />
       <Route path="/gabai/register" element={<GabaiRegister />} />
@@ -32,5 +36,6 @@ export default function App() {
       <Route path="/schedule" element={<SchedulePage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }

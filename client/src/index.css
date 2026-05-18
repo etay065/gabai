@@ -114,3 +114,13 @@ input, select, textarea, button {
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0,0,0,0); border: 0;
 }
+
+/* ===== Accessibility classes ===== */
+* { font-size: calc(1em + var(--a11y-font-offset, 0px)); }
+.a11y-contrast { filter: contrast(150%); }
+.a11y-grayscale { filter: grayscale(100%); }
+.a11y-cursor, .a11y-cursor * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M8 2l18 12-7 2 4 9-3 1-4-9-8 6z' fill='black' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 0 0, auto !important; }
+.a11y-no-motion *, .a11y-no-motion *::before, .a11y-no-motion *::after { animation: none !important; transition: none !important; }
+.a11y-links a { text-decoration: underline !important; }
+a:focus-visible, button:focus-visible { outline: 3px solid #E8B52A !important; outline-offset: 2px !important; }
+a[href="#main-content"]:focus { top: 8px !important; }
