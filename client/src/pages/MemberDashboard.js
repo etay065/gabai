@@ -86,8 +86,10 @@ const HOLIDAYS = {
   '2026-09-26':'סוכות','2026-09-27':'חול המועד סוכות','2026-09-28':'חול המועד סוכות',
   '2026-09-29':'חול המועד סוכות','2026-09-30':'חול המועד סוכות','2026-10-01':'חול המועד סוכות','2026-10-02':'הושענא רבה',
   '2026-10-03':'שמיני עצרת ושמחת תורה',
-  '2027-01-04':'חנוכה','2027-01-05':'חנוכה','2027-01-06':'חנוכה','2027-01-07':'חנוכה',
-  '2027-01-08':'חנוכה','2027-01-09':'חנוכה','2027-01-10':'חנוכה','2027-01-11':'חנוכה',
+  '2026-12-04':'חנוכה','2026-12-05':'חנוכה','2026-12-06':'חנוכה','2026-12-07':'חנוכה',
+  '2026-12-08':'חנוכה','2026-12-09':'חנוכה','2026-12-10':'חנוכה','2026-12-11':'חנוכה',
+  '2027-12-24':'חנוכה','2027-12-25':'חנוכה','2027-12-26':'חנוכה','2027-12-27':'חנוכה',
+  '2027-12-28':'חנוכה','2027-12-29':'חנוכה','2027-12-30':'חנוכה','2027-12-31':'חנוכה',
   '2027-03-23':'פורים','2027-03-24':'שושן פורים',
   '2027-04-21':'פסח','2027-04-22':'פסח','2027-04-27':'פסח','2027-04-28':'פסח',
   '2027-06-08':'שבועות','2027-06-09':'שבועות',
@@ -135,7 +137,16 @@ function MiniCalendar({selectedDate, onSelectDate, minDate, maxDate}) {
   const goBack=()=>{if(vm===0){setVm(11);setVy(y=>y-1);}else setVm(m=>m-1);};
   const goFwd=()=>{if(vm===11){setVm(0);setVy(y=>y+1);}else setVm(m=>m+1);};
   const mid=new Date(vy,vm,15),mh=getHebDay(mid);
-  const hebMonthStr = getHebMonthName(mh.hdate);
+  // Get Hebrew months at start and end of Gregorian month
+  const firstDay = new Date(vy, vm, 1);
+  const lastDay = new Date(vy, vm + 1, 0);
+  const hFirst = getHebDay(firstDay);
+  const hLast = getHebDay(lastDay);
+  const firstMonthStr = getHebMonthName(hFirst.hdate);
+  const lastMonthStr = getHebMonthName(hLast.hdate);
+  const hebMonthStr = firstMonthStr === lastMonthStr
+    ? `${firstMonthStr} ${hFirst.year}`
+    : `${lastMonthStr}-${firstMonthStr} ${hLast.year}`;
   return (
     <div style={{border:'1px solid var(--clr-border)',borderRadius:'var(--radius-lg)',overflow:'hidden',marginBottom:'1rem',direction:'rtl'}}>
       <div style={{background:'var(--navy-800)',padding:'10px 14px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
