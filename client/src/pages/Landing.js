@@ -37,7 +37,7 @@ export default function Landing() {
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <div className={styles.logoMark}>
-            <svg width="280" height="110" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg" style={{direction:"ltr", display:"block", margin:"0 auto"}}>
+            <svg width="280" height="110" viewBox="15 0 230 80" xmlns="http://www.w3.org/2000/svg" style={{direction:"ltr", display:"block", margin:"0 auto"}}>
               <defs>
                 <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#F5D87A"/><stop offset="100%" stopColor="#E8B52A"/>
