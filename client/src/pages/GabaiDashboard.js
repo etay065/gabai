@@ -10,6 +10,7 @@ import { useLang } from '../i18n/LanguageContext';
 import styles from './GabaiDashboard.module.css';
 
 const DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const DAYS_HEADER = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
 
 function getParasha(date) {
   try {
