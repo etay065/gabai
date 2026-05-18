@@ -22,7 +22,7 @@ export default function AccessibilityWidget() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     const root = document.documentElement;
     // font size
-    const sizes = [-2, 0, 2, 4, 6];
+    const sizes = [0, 2, 4, 6, 8];
     root.style.setProperty('--a11y-font-offset', sizes[settings.fontSize + 1] + 'px');
     // high contrast
     root.classList.toggle('a11y-contrast', settings.highContrast);
