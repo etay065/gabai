@@ -16,9 +16,10 @@
 <!-- Windows -->
 <circle cx="80" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
 <circle cx="120" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
-<!-- Magen David on top of dome -->
-<g transform="translate(100,52)">
-  <polygon points="0,-13 11,6.5 -11,6.5" fill="none" stroke="#F5D87A" stroke-width="2.5" stroke-linejoin="round"/>
-  <polygon points="0,13 11,-6.5 -11,-6.5" fill="none" stroke="#F5D87A" stroke-width="2.5" stroke-linejoin="round"/>
+<!-- Magen David above dome on dark circle -->
+<g transform="translate(100,38)">
+  <circle cx="0" cy="0" r="16" fill="#0D1526"/>
+  <polygon points="0,-12 10.5,6 -10.5,6" fill="none" stroke="#E8B52A" stroke-width="2.2" stroke-linejoin="round"/>
+  <polygon points="0,12 10.5,-6 -10.5,-6" fill="none" stroke="#E8B52A" stroke-width="2.2" stroke-linejoin="round"/>
 </g>
 </svg>
