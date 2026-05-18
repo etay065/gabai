@@ -118,6 +118,10 @@ const HOLIDAYS = {
   '2027-12-24':'חנוכה','2027-12-25':'חנוכה','2027-12-26':'חנוכה','2027-12-27':'חנוכה',
   '2027-12-28':'חנוכה','2027-12-29':'חנוכה','2027-12-30':'חנוכה','2027-12-31':'חנוכה',
 };
+function getHebDay(date) {
+  const hdate = new HDate(date);
+  return { hdate, year: hdate.getFullYear(), day: hdate.getDate() };
+}
 const HEB_MONTH_NAMES = ['','ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר','אדר ב׳','אדר א׳'];
 function getHebMonthName(hd) {
   const m = hd.getMonth();
