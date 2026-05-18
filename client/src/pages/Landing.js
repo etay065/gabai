@@ -37,18 +37,18 @@ export default function Landing() {
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <div className={styles.logoMark}>
-            <svg width="280" height="110" viewBox="-15 0 280 80" xmlns="http://www.w3.org/2000/svg" style={{direction:"ltr"}}>
+            <svg width="280" height="110" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg" style={{direction:"ltr"}}>
               <defs>
                 <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#F5D87A"/><stop offset="100%" stopColor="#E8B52A"/>
                 </linearGradient>
               </defs>
-              <text x="74" y="62" textAnchor="end" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="#ffffff" letterSpacing="-2">GAB</text>
-              <g transform="translate(130,32)">
+              <text x="148" y="62" textAnchor="end" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="#ffffff" letterSpacing="-2">GAB</text>
+              <g transform="translate(155,32)">
                 <polygon points="0,-18 15.5,9 -15.5,9" fill="none" stroke="url(#gld)" strokeWidth="2.6" strokeLinejoin="round"/>
                 <polygon points="0,18 15.5,-9 -15.5,-9" fill="none" stroke="url(#gld)" strokeWidth="2.6" strokeLinejoin="round"/>
               </g>
-              <text x="145" y="62" textAnchor="start" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="url(#gld)" letterSpacing="-2">AI</text>
+              <text x="162" y="62" textAnchor="start" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="url(#gld)" letterSpacing="-2">AI</text>
             </svg>
           </div>
           <div className={styles.logoTextWrap}>
