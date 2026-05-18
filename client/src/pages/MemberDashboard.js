@@ -123,6 +123,7 @@ function getHebDay(date) {
   return { hdate, year: hdate.getFullYear(), day: hdate.getDate() };
 }
 const HEB_MONTH_NAMES = ['','ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר','אדר ב׳','אדר א׳'];
+const GREG_MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 function getHebMonthName(hd) {
   const m = hd.getMonth();
   const y = hd.getFullYear();

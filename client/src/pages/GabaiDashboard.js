@@ -125,6 +125,7 @@ function getHebDay(date) {
   const hdate = new HDate(date);
   return { hdate, year: hdate.getFullYear(), day: hdate.getDate() };
 }
+const GREG_MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 function getHebMonthName(hd) {
   const m = hd.getMonth();
   if (m === months.ADAR_I) return 'אדר א׳';
