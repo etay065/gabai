@@ -135,6 +135,7 @@ function getHebMonthName(hd) {
   return names[m] || '';
 }
 
+function toKey(d){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;}
 function getCalDays(year,month){
   const first=new Date(year,month,1),last=new Date(year,month+1,0),days=[];
   for(let i=0;i<first.getDay();i++)days.push({date:new Date(year,month,-first.getDay()+i+1),cur:false});
