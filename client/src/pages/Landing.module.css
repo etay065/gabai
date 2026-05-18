@@ -48,14 +48,7 @@
   width: 260px; height: 260px;
   display: flex; align-items: center; justify-content: center;
 }
-.logoMark::before {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(232,181,42,0.15) 0%, transparent 70%);
-  filter: blur(8px);
-}
+
 .logoSvg {
   width: 250px; height: 250px;
   position: relative;
