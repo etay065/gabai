@@ -21,9 +21,9 @@ export default function AccessibilityWidget() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     const root = document.documentElement;
-    // font size
-    const sizes = [0, 2, 4, 6, 8];
-    root.style.setProperty('--a11y-font-offset', sizes[settings.fontSize + 1] + 'px');
+    // font size via zoom
+    const zooms = [0.85, 1, 1.15, 1.3, 1.45];
+    document.body.style.zoom = zooms[settings.fontSize + 1];
     // high contrast
     root.classList.toggle('a11y-contrast', settings.highContrast);
     // grayscale
