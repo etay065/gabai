@@ -232,6 +232,7 @@ export default function GabaiDashboard() {
   const { t, lang, toggleLang } = useLang();
 
   const [tab, setTab] = useState('requests');
+  const [statusFilter, setStatusFilter] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [schedDate, setSchedDate] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -281,10 +282,15 @@ export default function GabaiDashboard() {
   const pendingAll = allRequests.filter(r => r.status === 'pending');
   const approved   = allRequests.filter(r => r.status === 'approved').length;
 
-  // סינון בקשות לפי תאריך נבחר
-  const filteredReqs = selectedDate
-    ? allRequests.filter(r => r.requestDate === toKey(selectedDate))
-    : pendingAll;
+  // סינון בקשות לפי תאריך ו-status
+  const filteredReqs = (() => {
+    let base = statusFilter === 'all' ? allRequests
+      : statusFilter === 'approved' ? allRequests.filter(r => r.status === 'approved')
+      : statusFilter === 'pending' ? pendingAll
+      : pendingAll;
+    if (selectedDate) base = base.filter(r => r.requestDate === toKey(selectedDate));
+    return base;
+  })();
 
   // נקודות על הלוח
   const markedDates = allRequests.reduce((acc, r) => {
@@ -350,22 +356,16 @@ export default function GabaiDashboard() {
         {tab === 'requests' && (
           <>
             <div className={styles.metrics}>
-              <div className={`${styles.metric} ${styles.metricPending}`}>
+              <div className={`${styles.metric} ${styles.metricPending} ${statusFilter==='pending'?styles.metricActive:''}`} onClick={()=>setStatusFilter(f=>f==='pending'?null:'pending')} style={{cursor:'pointer'}}>
                 <div className={styles.metricNum}>{pendingAll.length}</div><div className={styles.metricLbl}>ממתינות</div>
               </div>
-              <div className={`${styles.metric} ${styles.metricApproved}`}>
+              <div className={`${styles.metric} ${styles.metricApproved} ${statusFilter==='approved'?styles.metricActive:''}`} onClick={()=>setStatusFilter(f=>f==='approved'?null:'approved')} style={{cursor:'pointer'}}>
                 <div className={styles.metricNum}>{approved}</div><div className={styles.metricLbl}>אושרו</div>
               </div>
-              <div className={styles.metric}>
+              <div className={`${styles.metric} ${statusFilter==='all'?styles.metricActive:''}`} onClick={()=>setStatusFilter(f=>f==='all'?null:'all')} style={{cursor:'pointer'}}>
                 <div className={styles.metricNum}>{allRequests.length}</div><div className={styles.metricLbl}>סה"כ</div>
               </div>
             </div>
-
-            <MiniCalendar
-              selectedDate={selectedDate}
-              onSelectDate={d => setSelectedDate(prev => prev && toKey(prev)===toKey(d) ? null : d)}
-              markedDates={markedDates}
-            />
 
             <div className={styles.listHeader}>
               {selectedDate ? (
