@@ -1,0 +1,24 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F5D87A"/>
+    <stop offset="100%" stop-color="#E8B52A"/>
+  </linearGradient>
+</defs>
+<!-- Glow -->
+<circle cx="100" cy="95" r="70" fill="rgba(232,181,42,0.07)"/>
+<!-- Dome -->
+<path d="M60,117 Q60,52 100,42 Q140,52 140,117 Z" fill="url(#g)" opacity="0.95"/>
+<!-- Building body -->
+<rect x="66" y="115" width="68" height="32" fill="#152040" rx="2"/>
+<!-- Door -->
+<path d="M91,147 L91,127 Q100,119 109,127 L109,147 Z" fill="url(#g)" opacity="0.9"/>
+<!-- Windows -->
+<circle cx="80" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
+<circle cx="120" cy="127" r="5" fill="url(#g)" opacity="0.65"/>
+<!-- Magen David on top of dome -->
+<g transform="translate(100,52)">
+  <polygon points="0,-13 11,6.5 -11,6.5" fill="none" stroke="#F5D87A" stroke-width="2.5" stroke-linejoin="round"/>
+  <polygon points="0,13 11,-6.5 -11,-6.5" fill="none" stroke="#F5D87A" stroke-width="2.5" stroke-linejoin="round"/>
+</g>
+</svg>

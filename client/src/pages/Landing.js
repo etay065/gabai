@@ -37,7 +37,7 @@ export default function Landing() {
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
           <div className={styles.logoMark}>
-            <img src="/logo-transparent.png" alt="Gab-AI" className={styles.logoSvg} />
+            <img src="/logo.svg" alt="Gab-AI" className={styles.logoSvg} />
           </div>
           <div className={styles.logoTextWrap}>
             <div className={styles.logoTagline}>מערכת ניהול בית כנסת</div>
