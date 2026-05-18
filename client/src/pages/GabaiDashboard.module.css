@@ -30,7 +30,7 @@
 }
 
 .headerInfo { flex: 1; min-width: 0; }
-.headerTitle { font-size: 15px; font-weight: 700; color: #ffffff; line-height: 1.2; }
+.headerTitle { font-size: 13px; font-weight: 700; color: #ffffff; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .headerSub   { font-size: 11px; color: var(--navy-300); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .logoutBtn {
