@@ -250,6 +250,13 @@ export default function MemberDashboard() {
     submitMutation.mutate({ ...form, memberName: name, synagogueId: synagogue._id, day: selectedDate.getDay(), shabbatLabel: getParasha(selectedDate) || HOLIDAYS[key] || '', requestDate: key });
   };
   const statusLabel = s => ({ pending: 'ממתין לאישור', approved: 'אושר', declined: 'נדחה' })[s] || s;
+  const [showDonation, setShowDonation] = useState(false);
+  const [donationForm, setDonationForm] = useState({ amount: '', description: '' });
+  const donationMutation = useMutation({
+    mutationFn: data => api.post('/donations', data),
+    onSuccess: () => { setShowDonation(false); setDonationForm({ amount: '', description: '' }); toast.success('תרומה נשלחה בהצלחה!'); },
+    onError: () => toast.error('שגיאה בשליחת התרומה'),
+  });
   const selKey = selectedDate ? toKey(selectedDate) : null;
   const isSaturday = selectedDate?.getDay() === 6;
   return (
@@ -274,6 +281,26 @@ export default function MemberDashboard() {
           <button className={styles.changeSynBtn} onClick={() => navigate('/member')}>החלף</button>
         </div>
         <button className={styles.newBtn} onClick={() => setShowCal(true)}>+ בקשה חדשה</button>
+        <button className={styles.newBtn} onClick={() => setShowDonation(v => !v)} style={{background:'var(--green-100)',color:'var(--green-700)',border:'1.5px solid var(--green-200)',marginBottom:'0.5rem'}}>
+          {showDonation ? '✕ ביטול' : '💝 הצהרת תרומה'}
+        </button>
+        {showDonation && (
+          <Card>
+            <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>הצהרת תרומה</div>
+            <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
+              <input placeholder="סכום (₪)" type="number" value={donationForm.amount}
+                onChange={e => setDonationForm(f => ({...f, amount: e.target.value}))}
+                style={{padding:'8px 10px',border:'1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:14,fontFamily:'inherit',direction:'rtl'}} />
+              <input placeholder="הערה (אופציונלי)" value={donationForm.description}
+                onChange={e => setDonationForm(f => ({...f, description: e.target.value}))}
+                style={{padding:'8px 10px',border:'1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:14,fontFamily:'inherit',direction:'rtl'}} />
+            </div>
+            <Button variant="approve" onClick={() => {
+              if (!donationForm.amount) { toast.error('יש להזין סכום'); return; }
+              donationMutation.mutate({ synagogueId: synagogue._id, memberName: name, amount: Number(donationForm.amount), description: donationForm.description, source: 'member' });
+            }}>שלח תרומה</Button>
+          </Card>
+        )}
         <div className={styles.sectionLabel}>הבקשות שלי</div>
         {isLoading && <Loader />}
         {!isLoading && myRequests?.length === 0 && (<EmptyState text="טרם הגשת בקשות" />)}

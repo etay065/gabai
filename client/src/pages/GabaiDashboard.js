@@ -347,7 +347,7 @@ export default function GabaiDashboard() {
       </header>
 
       <nav className={styles.tabs}>
-        {[['requests','בקשות',pendingAll.length],['schedule','לוח זמנים',0],['settings','הגדרות',0]].map(([key,label,cnt]) => (
+        {[['requests','בקשות',pendingAll.length],['donations','תרומות',0],['schedule','לוח זמנים',0],['settings','הגדרות',0]].map(([key,label,cnt]) => (
           <button key={key} className={`${styles.tab} ${tab===key?styles.tabActive:''}`} onClick={() => setTab(key)}>
             {label}{cnt>0&&<span className={styles.tabBadge}>{cnt}</span>}
           </button>
@@ -428,6 +428,9 @@ export default function GabaiDashboard() {
             ))}
           </>
         )}
+
+        {/* ── DONATIONS ── */}
+        {tab === 'donations' && <DonationsTab synagogue={synagogue} />}
 
         {/* ── SCHEDULE ── */}
         {tab === 'schedule' && (
@@ -570,6 +573,95 @@ export default function GabaiDashboard() {
     </div>
   );
 }
+
+function DonationsTab({ synagogue }) {
+  const qc = useQueryClient();
+  const sid = synagogue?._id;
+  const { data: donations = [], isLoading } = useQuery({
+    queryKey: ['donations', sid],
+    queryFn: () => api.get('/donations', { params: { synagogueId: sid } }).then(r => r.data),
+    enabled: !!sid,
+  });
+  const [form, setForm] = useState({ memberName: '', amount: '', description: '' });
+  const [showForm, setShowForm] = useState(false);
+
+  const addMutation = useMutation({
+    mutationFn: data => api.post('/donations', data),
+    onSuccess: () => { qc.invalidateQueries(['donations', sid]); setShowForm(false); setForm({ memberName: '', amount: '', description: '' }); toast.success('תרומה נוספה'); },
+    onError: () => toast.error('שגיאה בהוספה'),
+  });
+  const paidMutation = useMutation({
+    mutationFn: ({ id, paid }) => api.patch(`/donations/${id}/paid`, { paid }),
+    onSuccess: () => qc.invalidateQueries(['donations', sid]),
+  });
+  const deleteMutation = useMutation({
+    mutationFn: id => api.delete(`/donations/${id}`),
+    onSuccess: () => { qc.invalidateQueries(['donations', sid]); toast.success('נמחק'); },
+  });
+
+  const totalPaid = donations.filter(d => d.paid).reduce((s, d) => s + d.amount, 0);
+  const totalUnpaid = donations.filter(d => !d.paid).reduce((s, d) => s + d.amount, 0);
+
+  return (
+    <div style={{padding:'1rem'}}>
+      <div style={{display:'flex',gap:12,marginBottom:'1rem'}}>
+        <div style={{flex:1,background:'var(--green-100)',border:'1px solid var(--green-200)',borderRadius:'var(--radius-md)',padding:'12px',textAlign:'center'}}>
+          <div style={{fontSize:20,fontWeight:700,color:'var(--green-700)'}}>₪{totalPaid.toLocaleString()}</div>
+          <div style={{fontSize:12,color:'var(--green-700)'}}>שולם</div>
+        </div>
+        <div style={{flex:1,background:'var(--amber-100)',border:'1px solid var(--gold-200)',borderRadius:'var(--radius-md)',padding:'12px',textAlign:'center'}}>
+          <div style={{fontSize:20,fontWeight:700,color:'var(--amber-600)'}}>₪{totalUnpaid.toLocaleString()}</div>
+          <div style={{fontSize:12,color:'var(--amber-600)'}}>ממתין</div>
+        </div>
+      </div>
+
+      <button onClick={() => setShowForm(v => !v)} style={{width:'100%',padding:'10px',marginBottom:'1rem',border:'1.5px dashed var(--navy-300)',borderRadius:'var(--radius-md)',background:'transparent',color:'var(--navy-600)',fontWeight:600,cursor:'pointer',fontSize:14}}>
+        {showForm ? '✕ ביטול' : '+ הוסף תרומה ידנית'}
+      </button>
+
+      {showForm && (
+        <Card>
+          <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
+            <input placeholder="שם התורם" value={form.memberName} onChange={e => setForm(f => ({...f, memberName: e.target.value}))}
+              style={{padding:'8px 10px',border:'1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:14,fontFamily:'inherit',direction:'rtl'}} />
+            <input placeholder="סכום (₪)" type="number" value={form.amount} onChange={e => setForm(f => ({...f, amount: e.target.value}))}
+              style={{padding:'8px 10px',border:'1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:14,fontFamily:'inherit',direction:'rtl'}} />
+            <input placeholder="הערה (אופציונלי)" value={form.description} onChange={e => setForm(f => ({...f, description: e.target.value}))}
+              style={{padding:'8px 10px',border:'1.5px solid var(--clr-border2)',borderRadius:'var(--radius-md)',fontSize:14,fontFamily:'inherit',direction:'rtl'}} />
+          </div>
+          <Button variant="approve" onClick={() => {
+            if (!form.memberName || !form.amount) return toast.error('יש למלא שם וסכום');
+            addMutation.mutate({ synagogueId: sid, memberName: form.memberName, amount: Number(form.amount), description: form.description, source: 'gabai' });
+          }}>שמור תרומה</Button>
+        </Card>
+      )}
+
+      {isLoading && <Loader />}
+      {!isLoading && donations.length === 0 && <EmptyState text="אין תרומות עדיין" />}
+
+      {donations.map(d => (
+        <Card key={d._id}>
+          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+            <div style={{flex:1}}>
+              <div style={{fontWeight:700,fontSize:15}}>{d.memberName}</div>
+              <div style={{fontSize:12,color:'var(--clr-text2)'}}>{d.description || (d.source === 'member' ? 'נשלח ע"י מתפלל' : 'ידני')}</div>
+            </div>
+            <div style={{fontSize:18,fontWeight:800,color:'var(--navy-700)'}}>₪{d.amount.toLocaleString()}</div>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <label style={{display:'flex',alignItems:'center',gap:6,cursor:'pointer',fontSize:13}}>
+              <input type="checkbox" checked={d.paid} onChange={e => paidMutation.mutate({id:d._id, paid:e.target.checked})} />
+              {d.paid ? <span style={{color:'var(--green-700)',fontWeight:600}}>שולם ✓</span> : <span style={{color:'var(--amber-600)'}}>ממתין לתשלום</span>}
+            </label>
+            <button onClick={() => { if(window.confirm('למחוק תרומה זו?')) deleteMutation.mutate(d._id); }}
+              style={{marginRight:'auto',background:'transparent',border:'none',color:'var(--red-500)',cursor:'pointer',fontSize:16}}>🗑️</button>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 
 function GabaiSettings({ synagogue, qc }) {
   const [form, setForm] = useState({ name: synagogue?.name||'', city: synagogue?.city||'', parasha: synagogue?.parasha||'' });

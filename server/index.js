@@ -34,6 +34,7 @@ app.use('/api/synagogues', synagogueRoutes);
 app.use('/api/settings',   settingsRoutes);
 app.use('/api/auctions',   auctionRoutes);
 app.use('/api/members',    require('./routes/members'));
+app.use('/api/donations',  require('./routes/donations'));
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
