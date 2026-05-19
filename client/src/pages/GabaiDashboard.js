@@ -334,7 +334,6 @@ export default function GabaiDashboard() {
           <text x="162" y="62" textAnchor="start" fontFamily="Heebo,sans-serif" fontSize="68" fontWeight="800" fill="url(#hgld)" letterSpacing="-2">AI</text>
         </svg>
         <div className={styles.headerInfo}>
-          <div className={styles.headerTitle}>Gab-AI · לוח הגבאי</div>
           <div className={styles.headerSub}>{synagogue?.name}{synagogue?.parasha ? ` · פרשת ${synagogue.parasha}` : ''}</div>
         </div>
         <div className={styles.headerBtns}>
