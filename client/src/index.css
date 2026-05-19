@@ -127,7 +127,9 @@ a[href="#main-content"]:focus { top: 8px !important; }
 
 html, body {
   overflow-x: hidden;
+  overflow-y: auto;
   max-width: 100vw;
   overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
   -webkit-overflow-scrolling: touch;
 }
